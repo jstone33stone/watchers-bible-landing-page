@@ -582,34 +582,7 @@ html.skip-cover .cover { display: none; }
 .mini-phone[data-t="paper"] { --mini-fg: #161713; --mini-mut: #4b4e47; --mini-accent: #262822; --mini-line: rgba(22,23,20,0.24); background: #dbdcd6; }
 .spread-note { text-align: center; margin-top: 26px; font-size: 13.5px; font-style: italic; color: var(--ink-mut); }
 
-/* ── chapter seven: screenshots strip ─────────────────────────────── */
-.shots-strip {
-  display: flex; gap: 30px;
-  overflow-x: auto; scroll-snap-type: x mandatory;
-  padding: 24px max(24px, calc(50vw - 550px)) 30px;
-  scrollbar-width: none;
-  cursor: grab;
-}
-.shots-strip::-webkit-scrollbar { display: none; }
-.shots-strip.dragging { cursor: grabbing; scroll-snap-type: none; }
-.shot { flex: 0 0 auto; scroll-snap-align: center; text-align: center; }
-.shot:nth-child(odd) .shot-frame { transform: rotate(-1.4deg); }
-.shot:nth-child(even) .shot-frame { transform: rotate(1.4deg); }
-.shot-frame {
-  width: 236px; border-radius: 22px; overflow: hidden;
-  border: 3px solid var(--graphite);
-  background: var(--paper);
-  box-shadow: var(--shadow-deep);
-  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
-}
-.shot:hover .shot-frame { transform: rotate(0deg) translateY(-6px); }
-.shot-frame img { width: 100%; height: auto; }
-.shot figcaption { margin-top: 16px; max-width: 240px; margin-left: auto; margin-right: auto; }
-.shot strong { display: block; font-family: var(--display); font-weight: 500; font-size: 17px; margin-bottom: 4px; }
-.shot span { font-size: 12.5px; color: var(--ink-mut); line-height: 1.55; display: block; }
-.strip-hint { text-align: center; font-size: 12px; font-style: italic; color: var(--ink-mut); opacity: 0.7; margin-top: 4px; }
-
-/* ── chapter eight: download ──────────────────────────────────────── */
+/* ── chapter seven: download ──────────────────────────────────────── */
 .badge-row-center { justify-content: center; margin-bottom: 26px; }
 .platform-chips { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
 .platform-chips span {
@@ -679,8 +652,6 @@ html.skip-cover .cover { display: none; }
   .ribbon { right: 7px; width: 6px; }
   .topbar { padding: 10px 14px; }
   .brand-name { font-size: 16px; }
-  .shots-strip { gap: 20px; }
-  .shot-frame { width: 208px; }
 }
 
 /* ════════════════════════════════════════════════════════════════════

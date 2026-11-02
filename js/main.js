@@ -42,7 +42,7 @@
   var toReveal = [
     ".compare", ".stat-row", ".adslot-stage", ".stamp",
     ".feature-grid", ".teaser-grid", ".shelf-stage", ".spread",
-    ".shots-strip .shot", ".badge-row-center", ".platform-chips", ".footnote"
+    ".badge-row-center", ".platform-chips", ".footnote"
   ];
   var revealEls = document.querySelectorAll(toReveal.join(","));
   revealEls.forEach(function (el) {
@@ -267,32 +267,6 @@
     };
     setTimeout(flyAll, skipCover ? 1600 : 2400);
     setInterval(flyAll, 52000);
-  }
-
-  /* ── 7. screenshots strip: drag to scroll ──────────────────────── */
-  var strip = document.getElementById("shotsStrip");
-  if (strip) {
-    var down = false, startX = 0, startLeft = 0, moved = false;
-    strip.addEventListener("pointerdown", function (e) {
-      down = true; moved = false;
-      startX = e.clientX; startLeft = strip.scrollLeft;
-      strip.classList.add("dragging");
-    });
-    window.addEventListener("pointermove", function (e) {
-      if (!down) return;
-      var dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) moved = true;
-      strip.scrollLeft = startLeft - dx;
-    });
-    window.addEventListener("pointerup", function () {
-      down = false;
-      strip.classList.remove("dragging");
-    });
-    strip.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowRight") { strip.scrollBy({ left: 260, behavior: reduced ? "auto" : "smooth" }); e.preventDefault(); }
-      if (e.key === "ArrowLeft")  { strip.scrollBy({ left: -260, behavior: reduced ? "auto" : "smooth" }); e.preventDefault(); }
-    });
-    strip.addEventListener("click", function (e) { if (moved) e.preventDefault(); }, true);
   }
 
   /* ── 8. ink blot easter egg ────────────────────────────────────── */
