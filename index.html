@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watchers Bible · The Bible app that reads like paper</title>
+<meta name="description" content="The Bible app that reads like paper. Free, offline and completely ad-free for Android and iOS.">
+<meta property="og:title" content="Watchers Bible · Be still, and read.">
+<meta property="og:description" content="The Bible app that reads like paper. Free, offline and completely ad-free.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/logo-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>
+(function () {
+  try {
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (sessionStorage.wbSeen || reduced) document.documentElement.classList.add("skip-cover");
+  } catch (e) { document.documentElement.classList.add("skip-cover"); }
+})();
+</script>
+</head>
+<body>
+
+<!-- shared SVG defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="ink-wobble" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8"/>
+    </filter>
+    <filter id="torn-fiber" x="-5%" y="-30%" width="110%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.05" numOctaves="4" seed="11" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="7"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- book cover intro -->
+<div class="cover" aria-hidden="true">
+  <div class="cover-half cover-left">
+    <div class="cover-emblem">
+      <span class="cover-seal"><img src="assets/logo-mark.png" alt=""></span>
+      <span class="cover-title">Watchers Bible</span>
+      <span class="cover-sub">Be still, and read.</span>
+    </div>
+  </div>
+  <div class="cover-half cover-right"></div>
+</div>
+<div class="eink-flash" aria-hidden="true"></div>
+
+<!-- ribbon bookmark scroll progress -->
+<div class="ribbon" aria-hidden="true"><div class="ribbon-fill" id="ribbonFill"></div></div>
+
+<!-- folio page number, like a book leaf -->
+<div class="folio" aria-hidden="true">Page <span id="folioNum">1</span> of 24</div>
+
+<!-- top bar -->
+<header class="topbar">
+  <a class="brand" href="#top">
+    <span class="brand-seal"><img src="assets/logo-mark.png" alt="Watchers Bible logo"></span>
+    <span class="brand-name">Watchers Bible</span>
+  </a>
+  <a class="btn btn-ink btn-small" href="#download">Get the app</a>
+</header>
+
+<main id="top">
+
+  <!-- ═══════════ PROLOGUE · HERO ═══════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-sky" aria-hidden="true">
+      <div class="sun" data-depth="0.06">
+        <svg viewBox="0 0 120 120">
+          <g class="sun-rays" stroke="#4b4e47" stroke-width="1.4" stroke-linecap="round" opacity="0.55">
+            <line x1="60" y1="6" x2="60" y2="16"/><line x1="60" y1="104" x2="60" y2="114"/>
+            <line x1="6" y1="60" x2="16" y2="60"/><line x1="104" y1="60" x2="114" y2="60"/>
+            <line x1="22" y1="22" x2="29" y2="29"/><line x1="91" y1="91" x2="98" y2="98"/>
+            <line x1="98" y1="22" x2="91" y2="29"/><line x1="29" y1="91" x2="22" y2="98"/>
+            <line x1="42" y1="11" x2="44" y2="21"/><line x1="76" y1="99" x2="78" y2="109"/>
+            <line x1="11" y1="42" x2="21" y2="44"/><line x1="99" y1="76" x2="109" y2="78"/>
+            <line x1="78" y1="11" x2="76" y2="21"/><line x1="44" y1="99" x2="42" y2="109"/>
+            <line x1="11" y1="78" x2="21" y2="76"/><line x1="109" y1="44" x2="99" y2="42"/>
+          </g>
+          <circle cx="60" cy="60" r="30" fill="none" stroke="#4b4e47" stroke-width="1.6" opacity="0.7"/>
+          <circle cx="60" cy="60" r="26" fill="rgba(255,255,255,0.5)"/>
+        </svg>
+      </div>
+
+      <svg class="dove dove-flyby" viewBox="0 0 64 40" aria-hidden="true">
+        <g class="dove-wing"><polygon points="20,20 34,2 42,16" fill="#55574d"/></g>
+        <polygon points="30,14 40,8 44,20" fill="#262822"/>
+        <polygon points="8,26 30,14 44,20 26,32" fill="#3a3c33"/>
+        <polygon points="8,26 0,20 6,33" fill="#262822"/>
+      </svg>
+      <svg class="dove dove-flyby dove-2" viewBox="0 0 64 40" aria-hidden="true">
+        <g class="dove-wing"><polygon points="20,20 34,2 42,16" fill="#6a6c60"/></g>
+        <polygon points="30,14 40,8 44,20" fill="#3a3c33"/>
+        <polygon points="8,26 30,14 44,20 26,32" fill="#55574d"/>
+        <polygon points="8,26 0,20 6,33" fill="#3a3c33"/>
+      </svg>
+      <svg class="dove dove-flyby dove-3" viewBox="0 0 64 40" aria-hidden="true">
+        <g class="dove-wing"><polygon points="20,20 34,2 42,16" fill="#8b8d81"/></g>
+        <polygon points="30,14 40,8 44,20" fill="#55574d"/>
+        <polygon points="8,26 30,14 44,20 26,32" fill="#6a6c60"/>
+        <polygon points="8,26 0,20 6,33" fill="#55574d"/>
+      </svg>
+
+      <div class="cloud cloud-1" aria-hidden="true">
+        <svg viewBox="0 0 160 54"><path fill="#e9ebe4" stroke="#4b4e47" stroke-width="1" stroke-opacity="0.35" filter="url(#ink-wobble)" d="M14,44 C2,42 0,30 10,26 C8,14 22,8 32,14 C36,4 54,2 60,12 C68,4 84,6 86,16 C98,10 112,16 110,26 C122,26 128,38 118,44 Z"/></svg>
+      </div>
+      <div class="cloud cloud-2" aria-hidden="true">
+        <svg viewBox="0 0 160 54"><path fill="#e9ebe4" stroke="#4b4e47" stroke-width="1" stroke-opacity="0.3" filter="url(#ink-wobble)" d="M14,44 C2,42 0,30 10,26 C8,14 22,8 32,14 C36,4 54,2 60,12 C68,4 84,6 86,16 C98,10 112,16 110,26 C122,26 128,38 118,44 Z"/></svg>
+      </div>
+
+      <div class="motes" aria-hidden="true">
+        <i style="--x:8%;--d:46s;--s:9s"></i><i style="--x:22%;--d:61s;--s:12s"></i>
+        <i style="--x:37%;--d:52s;--s:10s"></i><i style="--x:55%;--d:70s;--s:14s"></i>
+        <i style="--x:68%;--d:48s;--s:8s"></i><i style="--x:81%;--d:64s;--s:11s"></i>
+        <i style="--x:92%;--d:57s;--s:13s"></i><i style="--x:47%;--d:66s;--s:9s"></i>
+      </div>
+    </div>
+
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">A Bible that reads like paper</p>
+        <h1 class="hero-title"><span>Be</span> <span>still,</span> <span>and</span> <span>read.</span></h1>
+        <p class="hero-sub">Watchers Bible puts the whole Word on your phone with a paper-white page, print&#8209;grade ink and not a single distraction. No ads. No noise. Just you and the Scriptures.</p>
+        <div class="badge-row">
+          <a class="badge" href="#play-store" aria-label="Get it on Google Play">
+            <svg viewBox="0 0 210 60" role="img"><rect x="1.5" y="1.5" width="207" height="57" rx="10" class="badge-box"/><g class="badge-mark" transform="translate(16,14)">
+              <path d="M2 2 L22 16 L2 30 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M2 2 L16 11.5 M2 30 L16 20.5" stroke="currentColor" stroke-width="1.2" opacity="0.6"/>
+            </g><text x="52" y="25" class="badge-top">GET IT ON</text><text x="52" y="45" class="badge-name">Google Play</text></svg>
+          </a>
+          <a class="badge" href="#app-store" aria-label="Download on the App Store">
+            <svg viewBox="0 0 210 60" role="img"><rect x="1.5" y="1.5" width="207" height="57" rx="10" class="badge-box"/><g class="badge-mark" transform="translate(18,12) scale(1.05)">
+              <path d="M14.6 5.6c1.2-1.5 2-3.5 1.8-5.6-1.7.1-3.8 1.2-5 2.6-1.1 1.3-2.1 3.4-1.8 5.4 1.9.1 3.8-1 5-2.4z" fill="currentColor"/>
+              <path d="M16.3 8.7c-2.7-.2-5 1.5-6.3 1.5-1.3 0-3.3-1.4-5.4-1.4C4.5 8.9 2.4 10.2 1.2 12.3c-2.4 4.2-.6 10.4 1.7 13.8 1.1 1.7 2.5 3.6 4.3 3.5 1.7-.1 2.4-1.1 4.5-1.1s2.7 1.1 4.5 1.1c1.9 0 3.1-1.7 4.2-3.4 1.3-1.9 1.9-3.8 1.9-3.9-.1 0-3.6-1.4-3.7-5.5-.1-3.4 2.8-5 2.9-5.1-1.6-2.3-4-2.6-4.7-2.6z" fill="currentColor" transform="translate(-2.2,-1.4) scale(0.92)"/>
+            </g><text x="56" y="25" class="badge-top">DOWNLOAD ON THE</text><text x="56" y="45" class="badge-name">App Store</text></svg>
+          </a>
+        </div>
+        <p class="apk-line">or <a class="ink-link" href="#direct-apk">download the APK directly</a></p>
+      </div>
+
+      <div class="hero-phone-col">
+        <div class="phone phone-hero" data-depth="0.03">
+          <div class="phone-notch"></div>
+          <div class="screen">
+            <div class="reader">
+              <div class="reader-top">Psalm 46</div>
+              <p class="v">God is our refuge and strength, a very present help in trouble.</p>
+              <p class="v">Therefore will not we fear, though the earth be removed.</p>
+              <p class="v v-sel"><span class="sweep-host">Be still, and know that I am God.</span></p>
+              <p class="v v-ref">Psalm 46:10</p>
+              <div class="reader-dock" aria-hidden="true"><i></i><i></i><i class="on"></i><i></i></div>
+            </div>
+          </div>
+        </div>
+        <p class="phone-caption">The reader, in the Paper theme</p>
+      </div>
+    </div>
+
+    <!-- paper-cut hills diorama -->
+    <div class="diorama" aria-hidden="true">
+      <svg class="hill hill-back" viewBox="0 0 1440 300" preserveAspectRatio="none" data-depth="0.015">
+        <path fill="#cdd0c8" opacity="0.62" d="M0,150 C120,108 260,88 420,110 C600,134 760,78 940,96 C1120,114 1280,86 1440,120 L1440,300 L0,300 Z"/>
+      </svg>
+      <svg class="hill hill-mid" viewBox="0 0 1440 300" preserveAspectRatio="none" data-depth="0.035">
+        <path fill="#bcbfb5" opacity="0.75" d="M0,190 C140,150 300,140 470,162 C640,184 820,128 1010,146 C1200,164 1320,140 1440,168 L1440,300 L0,300 Z"/>
+        <g fill="#a3a69b" opacity="0.9">
+          <path d="M1046,150 L1046,96 L1062,84 L1078,96 L1078,150 Z"/>
+          <path d="M1036,96 L1062,72 L1088,96 Z"/>
+          <rect x="1059" y="58" width="6" height="18"/><rect x="1053" y="64" width="18" height="6"/>
+        </g>
+      </svg>
+      <svg class="hill hill-front" viewBox="0 0 1440 300" preserveAspectRatio="none" data-depth="0.06" filter="url(#torn-fiber)">
+        <path fill="#aaada2" opacity="0.85" d="M0,236 C180,204 360,196 560,220 C760,244 960,196 1160,214 C1300,226 1380,216 1440,228 L1440,300 L0,300 Z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- torn divider -->
+  <div class="torn-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path fill="#e7e8e2" filter="url(#torn-fiber)" d="M0,30 L90,22 L210,36 L330,20 L470,34 L610,18 L760,34 L900,22 L1040,36 L1180,20 L1320,32 L1440,24 L1440,60 L0,60 Z"/></svg>
+  </div>
+
+  <!-- ═══════════ CHAPTER ONE · EYES ═══════════ -->
+  <section class="chapter" id="eyes">
+    <span class="marginalia m-star sway" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 L13.8 9.2 L21 11 L13.8 12.8 L12 20 L10.2 12.8 L3 11 L10.2 9.2 Z" fill="none" stroke="#4b4e47" stroke-width="1.3" filter="url(#ink-wobble)"/></svg></span>
+    <span class="marginalia m-glasses sway" aria-hidden="true"><svg viewBox="0 0 40 20"><g fill="none" stroke="#4b4e47" stroke-width="1.3" filter="url(#ink-wobble)"><circle cx="9" cy="11" r="6"/><circle cx="31" cy="11" r="6"/><path d="M15,10 C17,7.5 23,7.5 25,10"/><path d="M3,10 L1,7 M37,10 L39,7"/></g></svg></span>
+    <div class="wrap">
+      <p class="chapter-label">Chapter One</p>
+      <h2 class="ink-soak">Easier on your eyes than any glowing screen.</h2>
+      <p class="lede">The Paper theme is built like an e-reader: a reflective, glare&#8209;free page instead of a glowing backlight. No flicker. No blue light at midnight. Just ink resting on paper.</p>
+
+      <div class="compare card-sheet">
+        <div class="cmp cmp-lcd" aria-hidden="true">
+          <div class="cmp-screen">
+            <p class="lcd-title">daily verse ✨ devotional 🔥</p>
+            <p class="lcd-text">READ NOW! LIMITED OFFER! Upgrade to PRO to unlock this verse and remove ads!!!</p>
+            <div class="lcd-ad"><span>Ad</span> your ad here · your ad here</div>
+            <p class="lcd-text small">Tap anywhere to continue ▸ (watch a 30s video first)</p>
+          </div>
+          <p class="cmp-label">Every other app</p>
+        </div>
+        <div class="cmp cmp-paper">
+          <div class="cmp-screen cmp-paper-page">
+            <span class="lantern-glow" aria-hidden="true"></span>
+            <svg class="lantern" viewBox="0 0 24 32" aria-hidden="true">
+              <g filter="url(#ink-wobble)" fill="none" stroke="#262822" stroke-width="1.5" stroke-linecap="round">
+                <path d="M8,4 C8,1.5 16,1.5 16,4"/>
+                <path d="M7,4 L17,4 L18,8 L6,8 Z"/>
+                <path d="M6,8 L5.5,24 L18.5,24 L18,8"/>
+                <path d="M6,24 L6,28 L18,28 L18,24"/>
+              </g>
+              <path class="lantern-flame" d="M12,13 C14.4,15.5 14.6,18.5 12,20.5 C9.4,18.5 9.6,15.5 12,13 Z" fill="#fbfbf7"/>
+            </svg>
+            <p class="paperverse">Be still, and know that I am God.</p>
+            <p class="paperverse-ref">Psalm 46:10</p>
+            <svg class="quill-flourish" viewBox="0 0 180 26" aria-hidden="true">
+              <path class="quill-path" pathLength="1" d="M4,16 C34,4 52,24 84,14 C112,6 128,22 176,12" fill="none" stroke="#4b4e47" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="cmp-label">Watchers Bible</p>
+        </div>
+      </div>
+
+      <div class="stat-row" role="list">
+        <span class="stat" role="listitem">0 ads</span>
+        <span class="stat" role="listitem">100% offline</span>
+        <span class="stat" role="listitem">Free forever</span>
+        <span class="stat" role="listitem">Private by design</span>
+      </div>
+      <p class="footnote">Research on visual fatigue has repeatedly found e-reader style reflective displays more comfortable for extended reading than LCDs (Benedetto et al., 2013, Displays).</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ CHAPTER TWO · AD-FREE ═══════════ -->
+  <section class="chapter chapter-tint" id="adfree">
+    <div class="wrap">
+      <p class="chapter-label">Chapter Two</p>
+      <h2 class="ink-soak">The only Bible app with no advertisements.</h2>
+      <p class="lede">Every other Bible app interrupts the Word with banners, interstitials and upsells. Watchers Bible has never shown a single ad, and it never will. There is nothing to sell you here.</p>
+
+      <div class="adslot-stage">
+        <div class="adslot" aria-label="An empty advertisement banner">
+          <span class="adslot-tag">Ad</span>
+          <span class="adslot-text">This space is intentionally left blank.</span>
+        </div>
+        <div class="stamp" aria-hidden="true">Ad&#8209;free, always</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CHAPTER THREE · SIMPLICITY ═══════════ -->
+  <section class="chapter" id="simplicity">
+    <span class="marginalia m-vine sway" aria-hidden="true"><svg viewBox="0 0 28 52"><g fill="none" stroke="#4b4e47" stroke-width="1.3" filter="url(#ink-wobble)"><path d="M14,50 C10,38 20,32 14,22 C9,13 17,6 14,2"/><path d="M14,34 C18,33 21,30 21,26 C17,27 14,30 14,34 Z"/><path d="M13,16 C9,15 7,12 7,8 C11,9 13,12 13,16 Z"/></g></svg></span>
+    <div class="wrap">
+      <p class="chapter-label">Chapter Three</p>
+      <h2 class="ink-soak">Simplicity is beauty.</h2>
+      <p class="lede">The app is the quiet one. One column, honest margins, type set with care. The interface disappears the moment you start reading, the way a well printed book does. Nothing blinks, nothing begs for attention. The Word does not need decoration.</p>
+
+      <div class="feature-grid">
+        <article class="feature card-sheet">
+          <svg class="ink-icon" viewBox="0 0 24 24" aria-hidden="true"><g filter="url(#ink-wobble)"><path d="M3 5.5 C6 4 9 4 12 5.5 C15 4 18 4 21 5.5 L21 18.5 C18 17 15 17 12 18.5 C9 17 6 17 3 18.5 Z"/><path d="M12 5.5 L12 18.5"/><path d="M6.5 9 L9.5 9 M14.5 9 L17.5 9" opacity="0.55"/></g></svg>
+          <h3>Verse of the day</h3>
+          <p>Each dawn, a verse waits for you like a page left open.</p>
+        </article>
+        <article class="feature card-sheet">
+          <svg class="ink-icon" viewBox="0 0 24 24" aria-hidden="true"><g filter="url(#ink-wobble)"><path d="M7 3 L17 3 L17 21 L12 16.5 L7 21 Z"/><path d="M7 7 L17 7" opacity="0.55"/></g></svg>
+          <h3>Highlights, bookmarks &amp; notes</h3>
+          <p>Mark the verses that mark you. Synced across your devices when you sign in.</p>
+        </article>
+        <article class="feature card-sheet">
+          <svg class="ink-icon" viewBox="0 0 24 24" aria-hidden="true"><g filter="url(#ink-wobble)"><path d="M21 4.5 L3 11.4 L9.8 13.6 L12 20.5 L15.4 14.2 Z"/><path d="M21 4.5 L9.8 13.6" opacity="0.55"/></g></svg>
+          <h3>Fully offline</h3>
+          <p>Download entire Bibles once. Read them forever, airplane mode included.</p>
+        </article>
+        <article class="feature card-sheet">
+          <svg class="ink-icon" viewBox="0 0 24 24" aria-hidden="true"><g filter="url(#ink-wobble)"><path d="M3.5 5 L14.5 5 L14.5 12.5 L8.5 12.5 L5.5 15.5 L5.5 12.5 L3.5 12.5 Z"/><path d="M17 9 L20.5 9 L20.5 16 L18.5 16 L18.5 18.5 L15.8 16 L11.5 16"/></g></svg>
+          <h3>Every tongue</h3>
+          <p>A growing shelf of translations in many languages, with more added over time.</p>
+        </article>
+        <article class="feature card-sheet">
+          <svg class="ink-icon" viewBox="0 0 24 24" aria-hidden="true"><g filter="url(#ink-wobble)"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M6.5 9.5 L17.5 9.5 M6.5 12.5 L14 12.5" opacity="0.55"/><path d="M8 16 L16 16 M13.6 13.6 L16 16 L13.6 18.4"/></g></svg>
+          <h3>Share verse cards</h3>
+          <p>Send a verse as a beautiful card, not a screenshot.</p>
+        </article>
+        <article class="feature card-sheet">
+          <svg class="ink-icon" viewBox="0 0 24 24" aria-hidden="true"><g filter="url(#ink-wobble)"><circle cx="12" cy="12" r="8"/><path d="M12 4 A8 8 0 0 1 12 20 Z" class="icon-half" opacity="0.35"/></g></svg>
+          <h3>Four themes</h3>
+          <p>Dawn, Ember, Vigil (true black) and Paper.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CHAPTER FOUR · TONGUES ═══════════ -->
+  <section class="chapter chapter-tint" id="tongues">
+    <span class="marginalia m-bird sway" aria-hidden="true"><svg viewBox="0 0 32 22"><g fill="none" stroke="#4b4e47" stroke-width="1.3" filter="url(#ink-wobble)"><path d="M4,14 C8,6 18,4 24,8 C27,10 28,13 27,16 C22,19 12,19 7,16 Z"/><path d="M24,8 C26,5 29,4 31,5 C29,6 28,8 27,10"/><path d="M10,19 L9,21 M17,19 L17,21"/></g></svg></span>
+    <div class="tongues-marquee" aria-hidden="true">
+      <div class="tongues-track">
+        <span>Biblia &middot; &#22307;&#32463; &middot; &#1575;&#1604;&#1603;&#1578;&#1575;&#1576; &#1575;&#1604;&#1605;&#1602;&#1583;&#1587; &middot; Bibel &middot; &#1041;&#1080;&#1073;&#1083;&#1080;&#1103; &middot; Bibbia &middot; &#49457;&#44221; &middot; B&iacute;blio &middot; &#914;&#943;&#946;&#955;&#959;&#962; &middot; Maandiko &middot; Baibolo &middot; &#1496;&#1506;&#1500; &middot; </span><span>Biblia &middot; &#22307;&#32463; &middot; &#1575;&#1604;&#1603;&#1578;&#1575;&#1576; &#1575;&#1604;&#1605;&#1602;&#1583;&#1587; &middot; Bibel &middot; &#1041;&#1080;&#1073;&#1083;&#1080;&#1103; &middot; Bibbia &middot; &#49457;&#44221; &middot; B&iacute;blio &middot; &#914;&#943;&#946;&#955;&#959;&#962; &middot; Maandiko &middot; Baibolo &middot; &#1496;&#1506;&#1500; &middot; </span>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="chapter-label">Chapter Four</p>
+      <h2 class="ink-soak">The Word in every tongue.</h2>
+      <p class="lede">A growing shelf of translations in many languages, carried by the faithful work of their publishers. Whatever you download, it lives on your device: private, instant, fully offline.</p>
+
+      <div class="shelf-stage">
+        <div class="shelf" id="shelf">
+          <div class="spine" style="--h:96px;--w:20px;--d:0"><span>English</span></div>
+          <div class="spine spine-lean" style="--h:86px;--w:17px;--d:1"><span>Fran&ccedil;ais</span></div>
+          <div class="spine" style="--h:104px;--w:24px;--d:2"><span>Espa&ntilde;ol</span></div>
+          <div class="spine" style="--h:78px;--w:16px;--d:3"><span>Portugu&ecirc;s</span></div>
+          <div class="spine spine-lean-l" style="--h:92px;--w:19px;--d:4"><span>Deutsch</span></div>
+          <div class="spine" style="--h:100px;--w:22px;--d:5"><span>Italiano</span></div>
+          <div class="spine" style="--h:82px;--w:17px;--d:6"><span>&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</span></div>
+          <div class="spine spine-lean" style="--h:94px;--w:21px;--d:7"><span>&#20013;&#25991;</span></div>
+          <div class="spine" style="--h:88px;--w:18px;--d:8"><span>Ti&#7871;ng Vi&#7879;t</span></div>
+          <div class="spine" style="--h:98px;--w:23px;--d:9"><span>Filipino</span></div>
+          <div class="spine spine-ghost" style="--h:90px;--w:18px;--d:10"><span>&middot; &middot; &middot;</span></div>
+          <div class="spine spine-ghost spine-lean" style="--h:80px;--w:16px;--d:11"><span>&middot; &middot; &middot;</span></div>
+          <span class="shelf-tag">more coming</span>
+        </div>
+        <div class="shelf-board"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CHAPTER FIVE · COMING SOON ═══════════ -->
+  <section class="chapter" id="growing">
+    <div class="wrap">
+      <p class="chapter-label">Chapter Five</p>
+      <h2 class="ink-soak">And the shelf is still growing.</h2>
+      <div class="teaser-grid">
+        <article class="teaser card-sheet">
+          <svg class="teaser-art" viewBox="0 0 160 110" aria-hidden="true">
+            <path d="M36,72 L36,54 C36,34 50,20 80,20 C110,20 124,34 124,54 L124,72" fill="none" stroke="#262822" stroke-width="7" stroke-linecap="round"/>
+            <rect x="26" y="62" width="22" height="34" rx="8" fill="#55574d"/>
+            <rect x="112" y="62" width="22" height="34" rx="8" fill="#55574d"/>
+            <path d="M30,68 L30,90 M118,68 L118,90" stroke="#e7e8e2" stroke-width="1.6" opacity="0.5"/>
+            <g stroke="#4b4e47" stroke-width="1.6" stroke-linecap="round" fill="none" opacity="0.6">
+              <path d="M64,44 C68,40 74,40 78,44"/><path d="M84,44 C88,40 94,40 98,44"/>
+              <path d="M60,52 C67,46 77,46 84,52" opacity="0.45"/><path d="M80,52 C87,46 97,46 104,52" opacity="0.45"/>
+            </g>
+          </svg>
+          <div class="teaser-head"><h3>Audio Books</h3><span class="coming">Coming soon</span></div>
+          <p>The Word, read aloud. Scripture like a story told by firelight, for the road, the walk and the quiet hours.</p>
+        </article>
+        <article class="teaser card-sheet">
+          <svg class="teaser-art" viewBox="0 0 160 110" aria-hidden="true">
+            <polygon points="40,74 34,38 58,56 80,26 102,56 126,38 120,74" fill="#3a3c33"/>
+            <polygon points="34,38 58,56 54,74 44,74" fill="#55574d" opacity="0.85"/>
+            <polygon points="126,38 102,56 106,74 116,74" fill="#55574d" opacity="0.85"/>
+            <polygon points="80,26 86,56 80,74 74,56" fill="#262822" opacity="0.55"/>
+            <rect x="40" y="74" width="80" height="10" rx="2" fill="#262822"/>
+            <circle cx="80" cy="92" r="3" fill="#4b4e47" opacity="0.6"/>
+          </svg>
+          <div class="teaser-head"><h3>Premium Books</h3><span class="coming">Coming soon</span></div>
+          <p>A curated shelf of premium books for deeper study. Beautiful, ad&#8209;free, and worth the wait.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CHAPTER SIX · THEMES ═══════════ -->
+  <section class="chapter chapter-tint" id="themes">
+    <div class="wrap">
+      <p class="chapter-label">Chapter Six</p>
+      <h2 class="ink-soak">Made to match your light.</h2>
+      <div class="spread" id="spread">
+        <div class="spread-page spread-left"></div>
+        <div class="spread-page spread-right"></div>
+        <div class="popup" role="group" aria-label="App themes">
+          <div class="theme-chips" role="tablist" aria-label="Choose a theme preview">
+            <button class="tchip" role="tab" data-t="dawn" aria-selected="false">Dawn</button>
+            <button class="tchip" role="tab" data-t="ember" aria-selected="false">Ember</button>
+            <button class="tchip" role="tab" data-t="vigil" aria-selected="false">Vigil</button>
+            <button class="tchip is-on" role="tab" data-t="paper" aria-selected="true">Paper</button>
+          </div>
+          <div class="mini-phone" data-t="paper" id="miniPhone">
+            <div class="mini-bar"></div>
+            <p class="mini-label">Verse of the day</p>
+            <p class="mini-verse">In the beginning God created the heaven and the earth.</p>
+            <span class="mini-pill"></span>
+          </div>
+        </div>
+      </div>
+      <p class="spread-note">Four rooms, one stillness. Tap a theme to try it on.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ CHAPTER SEVEN · SCREENSHOTS ═══════════ -->
+  <section class="chapter" id="pages">
+    <div class="wrap">
+      <p class="chapter-label">Chapter Seven</p>
+      <h2 class="ink-soak">The app, page by page.</h2>
+      <p class="lede">Four rooms of the app, captured on a real device.</p>
+    </div>
+    <div class="shots-strip" id="shotsStrip" tabindex="0" aria-label="App screenshots, scroll sideways">
+      <figure class="shot">
+        <div class="shot-frame"><img src="assets/shots/home.jpg" alt="Watchers Bible home screen" width="360" height="788" loading="lazy"></div>
+        <figcaption><strong>Home</strong><span>Verse of the day, your place in the Word, and the whole library a tap away.</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="shot-frame"><img src="assets/shots/bible.jpg" alt="Watchers Bible reader screen" width="360" height="788" loading="lazy"></div>
+        <figcaption><strong>Bible</strong><span>One column, honest margins, verses that answer your touch.</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="shot-frame"><img src="assets/shots/library.jpg" alt="Watchers Bible library screen" width="360" height="788" loading="lazy"></div>
+        <figcaption><strong>Library</strong><span>Highlights, bookmarks and notes, gathered like pressed flowers.</span></figcaption>
+      </figure>
+      <figure class="shot">
+        <div class="shot-frame"><img src="assets/shots/settings.jpg" alt="Watchers Bible settings screen" width="360" height="788" loading="lazy"></div>
+        <figcaption><strong>Settings</strong><span>Themes, downloads and storage, all in plain sight.</span></figcaption>
+      </figure>
+    </div>
+    <p class="strip-hint" aria-hidden="true">drag &middot; scroll &middot; wander</p>
+  </section>
+
+  <!-- ═══════════ CHAPTER EIGHT · DOWNLOAD ═══════════ -->
+  <section class="chapter chapter-tint" id="download">
+    <span class="marginalia m-cross sway" aria-hidden="true"><svg viewBox="0 0 24 34"><g fill="none" stroke="#4b4e47" stroke-width="1.4" filter="url(#ink-wobble)"><path d="M12,2 L12,32 M4,10 L20,10"/></g></svg></span>
+    <div class="wrap wrap-center">
+      <p class="chapter-label">Chapter Eight</p>
+      <h2 class="ink-soak">Carry it with you.</h2>
+      <p class="lede">Free for everyone. The Bible lives on your device: private, instant, and fully offline.</p>
+      <div class="badge-row badge-row-center">
+        <a class="badge" href="#play-store" aria-label="Get it on Google Play">
+          <svg viewBox="0 0 210 60" role="img"><rect x="1.5" y="1.5" width="207" height="57" rx="10" class="badge-box"/><g class="badge-mark" transform="translate(16,14)">
+            <path d="M2 2 L22 16 L2 30 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M2 2 L16 11.5 M2 30 L16 20.5" stroke="currentColor" stroke-width="1.2" opacity="0.6"/>
+          </g><text x="52" y="25" class="badge-top">GET IT ON</text><text x="52" y="45" class="badge-name">Google Play</text></svg>
+        </a>
+        <a class="badge" href="#app-store" aria-label="Download on the App Store">
+          <svg viewBox="0 0 210 60" role="img"><rect x="1.5" y="1.5" width="207" height="57" rx="10" class="badge-box"/><g class="badge-mark" transform="translate(18,12) scale(1.05)">
+            <path d="M14.6 5.6c1.2-1.5 2-3.5 1.8-5.6-1.7.1-3.8 1.2-5 2.6-1.1 1.3-2.1 3.4-1.8 5.4 1.9.1 3.8-1 5-2.4z" fill="currentColor"/>
+            <path d="M16.3 8.7c-2.7-.2-5 1.5-6.3 1.5-1.3 0-3.3-1.4-5.4-1.4C4.5 8.9 2.4 10.2 1.2 12.3c-2.4 4.2-.6 10.4 1.7 13.8 1.1 1.7 2.5 3.6 4.3 3.5 1.7-.1 2.4-1.1 4.5-1.1s2.7 1.1 4.5 1.1c1.9 0 3.1-1.7 4.2-3.4 1.3-1.9 1.9-3.8 1.9-3.9-.1 0-3.6-1.4-3.7-5.5-.1-3.4 2.8-5 2.9-5.1-1.6-2.3-4-2.6-4.7-2.6z" fill="currentColor" transform="translate(-2.2,-1.4) scale(0.92)"/>
+          </g><text x="56" y="25" class="badge-top">DOWNLOAD ON THE</text><text x="56" y="45" class="badge-name">App Store</text></svg>
+        </a>
+        <a class="btn btn-ink btn-apk" href="#direct-apk">
+          <svg viewBox="0 0 24 24" class="btn-glyph" aria-hidden="true"><path d="M12 3 L12 15 M7 10.5 L12 15.5 L17 10.5 M4.5 19.5 L19.5 19.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Direct download (APK)
+        </a>
+      </div>
+      <p class="platform-chips"><span>Android supported</span><span>iOS supported</span></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap wrap-center footer-inner">
+      <div class="wax-seal" aria-hidden="true">
+        <svg viewBox="0 0 120 120">
+          <path class="seal-edge" d="M60,6 C70,2 78,10 88,8 C98,6 104,14 112,18 C118,22 114,32 118,40 C121,48 114,54 114,62 C114,70 120,76 116,84 C112,92 102,92 96,98 C90,104 84,112 74,112 C66,112 62,118 54,116 C46,114 40,120 32,114 C24,108 26,100 18,94 C10,88 6,80 8,72 C10,64 2,58 6,48 C10,40 18,40 22,32 C26,24 34,24 42,18 C50,12 52,8 60,6 Z" fill="#262822"/>
+          <circle cx="60" cy="60" r="40" fill="#2b2d26"/>
+          <circle cx="60" cy="60" r="40" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+        </svg>
+        <img src="assets/logo-mark.png" alt="">
+      </div>
+      <p class="footer-brand">Watchers Bible</p>
+      <p class="footer-line">Built with grace by Apostolic Intelligence</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#top">About</a><a href="#top">Privacy</a><a href="#top">Contact</a>
+      </nav>
+      <p class="colophon">And the light shineth in darkness. &mdash; John 1:5</p>
+    </div>
+  </footer>
+
+</main>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
