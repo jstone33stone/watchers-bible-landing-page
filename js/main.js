@@ -89,9 +89,55 @@
   [800, 2000, 4000].forEach(function (t) { setTimeout(sweepReveals, t); });
   window.addEventListener("load", sweepReveals);
 
-  /* hero verse highlight sweep, after the page settles */
+  /* ── 2c. hero phone: real screenshots flipping like e-ink pages ── */
   var heroPhone = document.querySelector(".phone-hero");
-  setTimeout(function () { if (heroPhone) heroPhone.classList.add("swept"); }, reduced ? 0 : 1500);
+  var heroShots = Array.prototype.slice.call(document.querySelectorAll("#heroShots .shot-img"));
+  var heroDots = Array.prototype.slice.call(document.querySelectorAll(".dots .dot"));
+  var heroCaption = document.getElementById("heroCaption");
+  var HERO_CAPTIONS = [
+    "Home · the verse of the day",
+    "Bible · Genesis 1, in your ink",
+    "Library · highlights and notes",
+    "Settings · the Paper theme"
+  ];
+  var heroIdx = 0, heroTimer = null;
+  function heroGo(i, user) {
+    i = (i + heroShots.length) % heroShots.length;
+    if (i === heroIdx) { if (user) heroRestart(); return; }
+    if (heroPhone && !reduced) {
+      heroPhone.classList.remove("wiping");
+      void heroPhone.offsetWidth; /* restart the wipe */
+      heroPhone.classList.add("wiping");
+    }
+    setTimeout(function () {
+      heroShots[heroIdx].classList.remove("is-on");
+      heroShots[heroIdx].setAttribute("aria-hidden", "true");
+      if (heroDots[heroIdx]) heroDots[heroIdx].classList.remove("is-on");
+      heroIdx = i;
+      heroShots[heroIdx].classList.add("is-on");
+      heroShots[heroIdx].removeAttribute("aria-hidden");
+      if (heroDots[heroIdx]) heroDots[heroIdx].classList.add("is-on");
+      if (heroCaption) heroCaption.textContent = HERO_CAPTIONS[heroIdx];
+    }, reduced ? 0 : 170);
+    if (user) heroRestart();
+  }
+  function heroRestart() {
+    if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+    if (!reduced) heroTimer = setInterval(function () { heroGo(heroIdx + 1); }, 4200);
+  }
+  if (heroShots.length) {
+    heroDots.forEach(function (d, i) {
+      d.addEventListener("click", function () { heroGo(i, true); });
+    });
+    if (heroPhone) {
+      heroPhone.addEventListener("click", function () { heroGo(heroIdx + 1, true); });
+      heroPhone.addEventListener("mouseenter", function () {
+        if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+      });
+      heroPhone.addEventListener("mouseleave", heroRestart);
+    }
+    heroRestart();
+  }
 
   /* ── 3b. quill flourish under every chapter heading + ghost numerals ── */
   var SVG_NS = "http://www.w3.org/2000/svg";

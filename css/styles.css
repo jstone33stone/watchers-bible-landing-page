@@ -233,11 +233,11 @@ html.skip-cover .cover { display: none; }
   100% { transform: translateY(78vh); opacity: 0; }
 }
 
-/* hero phone */
+/* hero phone — a real screenshot in the frame, flipping like e-ink pages */
 .hero-phone-col { position: relative; z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .phone {
   position: relative;
-  width: 272px; aspect-ratio: 9 / 19;
+  width: 272px;
   background: var(--paper);
   border: 3px solid var(--graphite);
   border-radius: 34px;
@@ -246,37 +246,30 @@ html.skip-cover .cover { display: none; }
   transform: rotate(2deg);
   background-image: var(--paper-fine), var(--paper-fiber);
 }
-.phone-notch {
-  position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--graphite); opacity: 0.85; z-index: 3;
+.phone-hero { aspect-ratio: 720 / 1575; cursor: pointer; }
+.screen-shots { position: absolute; inset: 0; padding: 0; background: var(--paper); }
+.screen-shots .shot-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+  opacity: 0;
+  transition: opacity 0.45s ease;
 }
-.screen { position: absolute; inset: 0; padding: 34px 18px 18px; }
-.reader-top {
-  font-family: var(--display); font-size: 15px; letter-spacing: 0.04em;
-  text-align: center; padding-bottom: 10px; margin-bottom: 12px;
-  border-bottom: 1px solid var(--line); font-weight: 500;
+.screen-shots .shot-img.is-on { opacity: 1; }
+.eink-wipe {
+  position: absolute; inset: 0; z-index: 2;
+  background: #cfd1ca; opacity: 0; pointer-events: none;
 }
-.reader .v { font-size: 12.5px; line-height: 1.75; margin-bottom: 10px; color: var(--ink); }
-.reader .v-sel { position: relative; }
-.sweep-host { position: relative; z-index: 1; }
-.sweep-host::before {
-  content: ""; position: absolute; inset: -2px -6px; z-index: -1;
-  background: rgba(38,40,34,0.13);
-  transform: scaleX(0); transform-origin: left center;
-  transition: transform 0.7s var(--ease-out) 0.9s;
+.phone-hero.wiping .eink-wipe { animation: eink 0.5s ease-out; }
+.dots { display: flex; gap: 9px; }
+.dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  border: 1.5px solid var(--ink-mut); background: transparent;
+  cursor: pointer; padding: 0;
+  transition: transform 0.25s var(--ease-out), background 0.25s ease;
 }
-.phone-hero.swept .sweep-host::before { transform: scaleX(1); }
-.reader .v-ref { text-align: right; font-size: 11px; color: var(--ink-mut); font-style: italic; margin-top: 4px; }
-.reader-dock {
-  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 14px; align-items: center;
-  background: rgba(231,232,226,0.9);
-  border: 1px solid var(--line); border-radius: 999px;
-  padding: 7px 16px;
-}
-.reader-dock i { width: 11px; height: 11px; border: 1.5px solid var(--ink-mut); border-radius: 3px; opacity: 0.65; }
-.reader-dock i.on { background: var(--graphite); border-color: var(--graphite); border-radius: 50%; opacity: 1; }
+.dot:hover { transform: scale(1.25); }
+.dot.is-on { background: var(--graphite); border-color: var(--graphite); }
 .phone-caption { font-size: 12.5px; font-style: italic; color: var(--ink-mut); }
 
 /* diorama hills */
@@ -662,7 +655,6 @@ html.skip-cover .cover { display: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .rv, .ink-soak span, .spine, .stat, .stamp { opacity: 1 !important; transform: none !important; filter: none !important; }
   .quill-path { stroke-dashoffset: 0; }
-  .sweep-host::before { transform: scaleX(1); }
   .dove { display: none; }
 }
 

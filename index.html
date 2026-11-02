@@ -145,20 +145,22 @@
       </div>
 
       <div class="hero-phone-col">
-        <div class="phone phone-hero" data-depth="0.03">
-          <div class="phone-notch"></div>
-          <div class="screen">
-            <div class="reader">
-              <div class="reader-top">Psalm 46</div>
-              <p class="v">God is our refuge and strength, a very present help in trouble.</p>
-              <p class="v">Therefore will not we fear, though the earth be removed.</p>
-              <p class="v v-sel"><span class="sweep-host">Be still, and know that I am God.</span></p>
-              <p class="v v-ref">Psalm 46:10</p>
-              <div class="reader-dock" aria-hidden="true"><i></i><i></i><i class="on"></i><i></i></div>
-            </div>
+        <div class="phone phone-hero" id="heroPhone" data-depth="0.03" title="Tap to turn the page">
+          <div class="screen screen-shots" id="heroShots">
+            <span class="eink-wipe" aria-hidden="true"></span>
+            <img class="shot-img is-on" src="assets/shots/home.jpg" alt="Watchers Bible home screen" width="720" height="1575" fetchpriority="high">
+            <img class="shot-img" src="assets/shots/bible.jpg" alt="Watchers Bible reader screen" width="720" height="1575" loading="lazy" aria-hidden="true">
+            <img class="shot-img" src="assets/shots/library.jpg" alt="Watchers Bible library screen" width="720" height="1575" loading="lazy" aria-hidden="true">
+            <img class="shot-img" src="assets/shots/settings.jpg" alt="Watchers Bible settings screen" width="720" height="1575" loading="lazy" aria-hidden="true">
           </div>
         </div>
-        <p class="phone-caption">The reader, in the Paper theme</p>
+        <div class="dots">
+          <button class="dot is-on" aria-label="Show the Home screen"></button>
+          <button class="dot" aria-label="Show the Bible screen"></button>
+          <button class="dot" aria-label="Show the Library screen"></button>
+          <button class="dot" aria-label="Show the Settings screen"></button>
+        </div>
+        <p class="phone-caption" id="heroCaption">Home &middot; the verse of the day</p>
       </div>
     </div>
 
