@@ -24,7 +24,17 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+/* keyboard users skip the page chrome */
+.skip-link {
+  position: fixed; top: -60px; left: 16px; z-index: 95;
+  background: var(--graphite); color: #eceee6;
+  font-size: 14px; font-weight: 600; text-decoration: none;
+  padding: 12px 20px; border-radius: 0 0 10px 10px;
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 0; }
 
 body {
   font-family: var(--serif);
@@ -96,9 +106,9 @@ html.skip-cover .cover { display: none; }
 .cover-title { display: block; font-family: var(--display); font-size: 24px; font-weight: 400; letter-spacing: 0.06em; }
 .cover-sub { display: block; margin-top: 6px; font-size: 13px; font-style: italic; opacity: 0.72; }
 
-/* e-ink refresh flash (repeat visits) */
-.eink-flash { position: fixed; inset: 0; z-index: 89; background: #cfd1ca; opacity: 0; pointer-events: none; }
-.eink-flash.run { animation: eink 0.5s ease-out 1; }
+/* e-ink refresh flash (repeat visits) — kept out of hit-testing until it runs */
+.eink-flash { position: fixed; inset: 0; z-index: 89; background: #cfd1ca; opacity: 0; visibility: hidden; pointer-events: none; }
+.eink-flash.run { visibility: visible; animation: eink 0.5s ease-out 1; }
 @keyframes eink { 0% {opacity: 0;} 18% {opacity: 0.9;} 55% {opacity: 0.35;} 100% {opacity: 0;} }
 
 /* ── ribbon bookmark scroll progress ──────────────────────────────── */
@@ -166,6 +176,7 @@ html.skip-cover .cover { display: none; }
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex; flex-direction: column;
   padding: 128px 0 0;
   overflow: hidden;
@@ -196,8 +207,8 @@ html.skip-cover .cover { display: none; }
 .badge-box { fill: var(--graphite); stroke: rgba(236,238,230,0.25); stroke-width: 1; }
 .badge { color: #eceee6; }
 .badge-mark { color: #eceee6; }
-.badge-top { fill: #b9bcae; font-family: system-ui, sans-serif; font-size: 9.5px; letter-spacing: 0.14em; }
-.badge-name { fill: #f2f3ec; font-family: system-ui, sans-serif; font-size: 17px; font-weight: 600; }
+.badge-top { fill: #b9bcae; font-family: 'Literata', serif; font-size: 9.5px; letter-spacing: 0.14em; }
+.badge-name { fill: #f2f3ec; font-family: 'Literata', serif; font-size: 17px; font-weight: 600; }
 .badge-row .badge { box-shadow: var(--shadow-card); border-radius: 10px; }
 .apk-line { margin-top: 16px; font-size: 14.5px; color: var(--ink-mut); }
 .apk-line .ink-link { color: var(--ink); }
@@ -261,16 +272,22 @@ html.skip-cover .cover { display: none; }
   background: #cfd1ca; opacity: 0; pointer-events: none;
 }
 .phone-hero.wiping .eink-wipe { animation: eink 0.5s ease-out; }
-.dots { display: flex; gap: 9px; }
+.dots { display: flex; gap: 12px; }
 .dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  border: 1.5px solid var(--ink-mut); background: transparent;
+  position: relative;
+  width: 24px; height: 24px;
+  border: 0; background: transparent;
   cursor: pointer; padding: 0;
-  transition: transform 0.25s var(--ease-out), background 0.25s ease;
+  display: inline-flex; align-items: center; justify-content: center;
 }
-.dot:hover { transform: scale(1.25); }
-.dot.is-on { background: var(--graphite); border-color: var(--graphite); }
-.phone-caption { font-size: 12.5px; font-style: italic; color: var(--ink-mut); }
+.dot::before {
+  content: ""; width: 9px; height: 9px; border-radius: 50%;
+  border: 1.5px solid var(--ink-mut); background: transparent;
+  transition: transform 0.25s var(--ease-out), background 0.25s ease, border-color 0.25s ease;
+}
+.dot:hover::before { transform: scale(1.25); }
+.dot.is-on::before { background: var(--graphite); border-color: var(--graphite); }
+.phone-caption { font-size: 13px; font-style: italic; color: var(--ink-mut); }
 
 /* diorama hills */
 .diorama { position: relative; margin-top: auto; height: clamp(150px, 24vh, 250px); }
@@ -308,9 +325,9 @@ html.skip-cover .cover { display: none; }
 }
 .lede { max-width: 62ch; margin: 0 auto 48px; text-align: center; color: var(--ink-mut); font-size: 17px; }
 
-/* ink-soak reveal words */
-.ink-soak span { opacity: 0; filter: blur(6px); transition: opacity 0.6s ease var(--wd, 0s), filter 0.6s ease var(--wd, 0s); }
-.ink-soak.in span, html.skip-motion .ink-soak span { opacity: 1; filter: blur(0); }
+/* ink-soak reveal words — the ink is always present; it soaks by sharpening */
+.ink-soak span { opacity: 1; filter: blur(5px); transition: filter 0.7s ease var(--wd, 0s); }
+.ink-soak.in span, html.skip-motion .ink-soak span { filter: blur(0); }
 
 /* page-lift reveal for sections/cards */
 .rv { opacity: 0; transform: translateY(26px); transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out); }
@@ -319,7 +336,7 @@ html.skip-cover .cover { display: none; }
 /* ── chapter one: compare ─────────────────────────────────────────── */
 .compare {
   display: grid; grid-template-columns: 1fr 1fr;
-  border-radius: 18px; overflow: hidden;
+  border-radius: 16px; overflow: hidden;
   border: 1px solid var(--line);
 }
 .card-sheet {
@@ -386,7 +403,7 @@ html.skip-cover .cover { display: none; }
   70% { opacity: 1; transform: scale(0.985); }
   100% { opacity: 1; transform: scale(1); }
 }
-.footnote { text-align: center; font-size: 12.5px; color: var(--ink-mut); opacity: 0.85; max-width: 60ch; margin: 0 auto; font-style: italic; }
+.footnote { text-align: center; font-size: 13px; color: var(--ink-mut); opacity: 0.85; max-width: 60ch; margin: 0 auto; font-style: italic; }
 
 /* ── chapter two: ad slot + stamp ─────────────────────────────────── */
 .adslot-stage { display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 12px 0 8px; }
@@ -637,7 +654,7 @@ html.skip-cover .cover { display: none; }
   .hero-sub { margin-left: auto; margin-right: auto; }
   .badge-row { justify-content: center; }
   .hero-phone-col { order: 2; }
-  .sun { right: 8%; }
+  .sun { top: 5%; right: 0; width: 92px; height: 92px; opacity: 0.45; }
   .feature-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {

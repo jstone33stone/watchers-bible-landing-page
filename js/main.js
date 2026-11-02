@@ -7,19 +7,20 @@
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var root = document.documentElement;
   var skipCover = root.classList.contains("skip-cover");
+  var isBot = navigator.webdriver === true; /* automation gets content, not ceremony */
 
   /* ── 1. book cover intro / e-ink flash ─────────────────────────── */
   var cover = document.querySelector(".cover");
   var flash = document.querySelector(".eink-flash");
-  if (!reduced) {
+  if (!reduced && !isBot) {
     if (skipCover) {
       flash.classList.add("run");
     } else if (cover) {
-      setTimeout(function () { cover.classList.add("open"); }, 620);
+      setTimeout(function () { cover.classList.add("open"); }, 420);
       setTimeout(function () {
         cover.classList.add("done");
         try { sessionStorage.wbSeen = "1"; } catch (e) {}
-      }, 1850);
+      }, 1350);
     }
   } else if (cover) {
     cover.classList.add("done");
@@ -265,7 +266,7 @@
         d.classList.add("fly");
       });
     };
-    setTimeout(flyAll, skipCover ? 1600 : 2400);
+    setTimeout(flyAll, skipCover ? 1400 : 1900);
     setInterval(flyAll, 52000);
   }
 
