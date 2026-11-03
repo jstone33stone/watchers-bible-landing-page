@@ -39,14 +39,19 @@
     });
   });
 
-  /* ── 3. reveal-on-enter (page lifts, shelves, stamps) ──────────── */
+  /* ── 3. reveal-on-enter, choreographed per section ─────────────── */
   var toReveal = [
     ".compare", ".stat-row", ".adslot-stage", ".stamp",
     ".feature-grid", ".teaser-grid", ".shelf-stage", ".spread",
-    ".badge-row-center", ".platform-chips", ".footnote"
+    ".badge-row-center", ".platform-chips", ".footnote",
+    ".chapter-label", ".lede:not([data-fill])"
   ];
+  /* containers whose children are choreographed in CSS: they take .in, never .rv */
+  var CHOREO = ".compare, .adslot-stage, .feature-grid, .teaser-grid, .badge-row-center, .platform-chips";
+  var REVEAL_SELECTOR = ".ink-soak, .rv, .stat, .stamp, .shelf-stage, .spread, .cmp-paper, .h2-flourish, " + CHOREO + ", .chapter-label, .lede:not([data-fill])";
   var revealEls = document.querySelectorAll(toReveal.join(","));
   revealEls.forEach(function (el) {
+    if (el.matches(CHOREO)) return;
     if (!el.classList.contains("rv") && !el.classList.contains("stat") &&
         !el.classList.contains("stamp") && !el.classList.contains("shelf-stage") &&
         !el.classList.contains("spread") && !el.classList.contains("stamp")) {
@@ -64,14 +69,13 @@
     });
   }, { threshold: 0.3, rootMargin: "0px 0px -8% 0px" });
 
-  document.querySelectorAll(".ink-soak, .rv, .stat, .stamp, .shelf-stage, .spread, .cmp-paper, .h2-flourish")
-    .forEach(function (el) { io.observe(el); });
+  document.querySelectorAll(REVEAL_SELECTOR).forEach(function (el) { io.observe(el); });
 
   /* safety sweep: on machines where IntersectionObserver delivery is
      slow (backgrounded panes, low-power modes), reveal anything in
      view ourselves; runs on beats, on load, and throttled while scrolling */
   var pendingReveals = Array.prototype.slice.call(
-    document.querySelectorAll(".ink-soak, .rv, .stat, .stamp, .shelf-stage, .spread, .cmp-paper, .h2-flourish")
+    document.querySelectorAll(REVEAL_SELECTOR)
   );
   function sweepReveals() {
     if (!pendingReveals.length) return;
@@ -170,6 +174,34 @@
 
   /* ── 4. pop-up spread theme chips + paper flutter burst ────────── */
   var mini = document.getElementById("miniPhone");
+
+  /* ── 3c. stagger indices for choreographed children ────────────── */
+  document.querySelectorAll(".feature-grid").forEach(function (g) {
+    g.querySelectorAll(".feature").forEach(function (f, i) { f.style.setProperty("--i", i); });
+  });
+  document.querySelectorAll(".badge-row-center, .platform-chips").forEach(function (row) {
+    Array.prototype.forEach.call(row.children, function (c, i) { c.style.setProperty("--i", i); });
+  });
+  document.querySelectorAll(".theme-chips").forEach(function (row) {
+    row.querySelectorAll(".tchip").forEach(function (c, i) { c.style.setProperty("--i", i); });
+  });
+
+  /* ── 3d. the paper-comfort statement: split into words so the
+     scroll can ink them in (skipped for reduced motion) ──────────── */
+  var fillEl = document.querySelector(".lede[data-fill]");
+  var fillWords = [];
+  var fillCount = 0;
+  if (fillEl && !reduced) {
+    var fWords = fillEl.textContent.trim().split(/\s+/);
+    fillEl.textContent = "";
+    fWords.forEach(function (w, i) {
+      var s = document.createElement("span");
+      s.textContent = w;
+      fillEl.appendChild(s);
+      if (i < fWords.length - 1) fillEl.appendChild(document.createTextNode(" "));
+      fillWords.push(s);
+    });
+  }
   function spawnFlutter(host) {
     if (reduced || !host) return;
     var r = host.getBoundingClientRect();
@@ -204,11 +236,14 @@
     });
   });
 
-  /* ── 5. one rAF loop: ribbon progress, folio, diorama parallax ─── */
+  /* ── 5. one rAF loop: ribbon progress, folio, diorama parallax,
+        ghost-numeral drift, scroll-inked statement ─────────────────── */
   var ribbon = document.getElementById("ribbonFill");
   var folioNum = document.getElementById("folioNum");
   var depthEls = Array.prototype.slice.call(document.querySelectorAll("[data-depth]"));
   var hero = document.getElementById("hero");
+  var chaps = Array.prototype.slice.call(document.querySelectorAll(".chapter"));
+  var numerals = Array.prototype.slice.call(document.querySelectorAll(".ghost-numeral"));
   var ticking = false;
 
   var scrollBeats = 0;
@@ -230,6 +265,28 @@
           var d = parseFloat(el.getAttribute("data-depth")) || 0;
           el.style.transform = "translate3d(0," + (y * d * -1).toFixed(1) + "px,0)";
         });
+      }
+    }
+    if (!reduced) {
+      var vh = window.innerHeight;
+      /* batched reads first, then writes — no layout thrash */
+      var rects = [];
+      for (var ci = 0; ci < chaps.length; ci++) rects.push(chaps[ci].getBoundingClientRect());
+      var fillRect = fillWords.length ? fillEl.getBoundingClientRect() : null;
+      for (ci = 0; ci < chaps.length; ci++) {
+        var cr = rects[ci];
+        if (cr.bottom < -120 || cr.top > vh + 120) continue;
+        var cp = Math.min(1, Math.max(0, (vh - cr.top) / (vh + cr.height)));
+        numerals[ci].style.setProperty("--drift", ((0.5 - cp) * 110).toFixed(1) + "px");
+      }
+      if (fillWords.length) {
+        var fp = Math.min(1, Math.max(0, (vh * 0.94 - fillRect.top) / (vh * 0.5)));
+        var target = Math.round(fp * fillWords.length);
+        if (target !== fillCount) {
+          var lo = Math.min(target, fillCount), hi = Math.max(target, fillCount);
+          for (var wi = lo; wi < hi; wi++) fillWords[wi].classList.toggle("is-inked", wi < target);
+          fillCount = target;
+        }
       }
     }
     if ((scrollBeats = (scrollBeats + 1) % 45) === 0) sweepReveals();

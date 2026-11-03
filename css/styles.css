@@ -16,6 +16,8 @@
   --serif: 'Literata', Georgia, 'Times New Roman', serif;
   --display: 'Fraunces', 'Literata', Georgia, serif;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);
   --shadow-card: 0 8px 20px rgba(22,23,20,0.12), 0 2px 5px rgba(22,23,20,0.06);
   --shadow-deep: 0 18px 44px rgba(22,23,20,0.22), 0 4px 10px rgba(22,23,20,0.1);
   --paper-fine:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.06'/%3E%3C/svg%3E");
@@ -720,9 +722,9 @@ body::after {
   50%      { transform: translate3d(44px, -10px, 0); }
 }
 
-/* the dove flock: same path, staggered and offset */
-.dove-2 { top: 37%; width: 44px; --fly-dur: 17s; --fly-delay: 2.2s; }
-.dove-3 { top: 12%; width: 34px; --fly-dur: 19s; --fly-delay: 3.6s; opacity: 0.85; }
+/* the dove flock: same path, staggered and offset — kept above the hero copy */
+.dove-2 { top: 19%; width: 44px; --fly-dur: 17s; --fly-delay: 2.2s; }
+.dove-3 { top: 9%; width: 34px; --fly-dur: 19s; --fly-delay: 3.6s; opacity: 0.85; }
 .dove-flyby.fly { animation: dove-fly var(--fly-dur, 14s) var(--ease-out) var(--fly-delay, 0s) 1 forwards; }
 
 /* lantern flicker in the paper panel */
@@ -754,7 +756,7 @@ body::after {
 /* ghost chapter numerals behind headings */
 .ghost-numeral {
   position: absolute; top: 30px; left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(calc(-50% + var(--drift, 0px)));
   font-family: var(--display); font-weight: 300; line-height: 1;
   font-size: clamp(170px, 24vw, 300px);
   color: var(--ink); opacity: 0.05;
@@ -815,11 +817,107 @@ body::after {
 @media (max-width: 1020px) {
   .marginalia { display: none; }
   .ghost-numeral { font-size: 150px; top: 44px; }
+  /* doves would fly across the hero copy on narrow screens */
+  .dove { display: none; }
 }
 @media (max-width: 640px) {
   .folio { display: none; }
   .cloud-2 { display: none; }
   .cloud-1 { width: 110px; top: 10%; left: 3%; }
-  /* doves would fly across the hero copy on a phone */
-  .dove { display: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   v3 · choreographed motion — masked rises, side slides, staggered
+   deals, scroll-locked drift. Every hidden state lives inside .js +
+   prefers-reduced-motion: no-preference, so no-JS and reduced-motion
+   visitors simply get the finished page.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* hero title: words rise out of their own line masks */
+.ht-mask {
+  display: inline-block; overflow: hidden;
+  padding-bottom: 0.09em; margin-bottom: -0.09em;
+  vertical-align: bottom;
+}
+.ht-word { display: inline-block; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ── press feedback under the hand ─────────────────────────────── */
+  .btn:active, .tchip:active, .badge:active { transform: translateY(1px) scale(0.98); transition-duration: 140ms; }
+  .dot:active::before { transform: scale(0.85); }
+
+  /* ── hero load sequence: settled in under two seconds ──────────── */
+  .js .ht-word {
+    transform: translateY(112%);
+    animation: word-rise 850ms var(--ease-expo) forwards;
+    animation-delay: calc(480ms + var(--w, 0) * 90ms);
+  }
+  .js .hero .eyebrow { opacity: 0; transform: translateY(12px); animation: load-rise 600ms var(--ease-out) 430ms forwards; }
+  .js .hero-sub { opacity: 0; transform: translateY(14px); animation: load-rise 650ms var(--ease-out) 840ms forwards; }
+  .js .hero .badge-row .badge { opacity: 0; transform: translateY(16px); animation: load-rise 650ms var(--ease-out) forwards; }
+  .js .hero .badge-row .badge:nth-child(1) { animation-delay: 950ms; }
+  .js .hero .badge-row .badge:nth-child(2) { animation-delay: 1030ms; }
+  .js .hero .apk-line { opacity: 0; animation: load-rise 600ms var(--ease-out) 1130ms forwards; }
+  .js .hero-phone-col { opacity: 0; transform: translateX(56px) rotate(3deg); animation: phone-in 1100ms var(--ease-expo) 700ms forwards; }
+
+  /* ── chapter furniture arrives in reading order ────────────────── */
+  .js .chapter-label, .js .lede:not([data-fill]) {
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 650ms var(--ease-out), transform 750ms var(--ease-out);
+  }
+  .js .chapter-label.in, .js .lede.in { opacity: 1; transform: none; }
+
+  /* ── chapter one: the two pages slide in from opposite sides ───── */
+  .js .cmp { opacity: 0; transition: opacity 850ms var(--ease-expo), transform 950ms var(--ease-expo); }
+  .js .cmp-lcd { transform: translateX(-46px); }
+  .js .cmp-paper { transform: translateX(46px); }
+  .js .compare.in .cmp { opacity: 1; transform: none; }
+  .js .compare.in .cmp-paper { transition-delay: 130ms; }
+
+  /* the paper-comfort statement inks itself in as you scroll */
+  .js .lede[data-fill] span { color: rgba(22, 23, 20, 0.45); transition: color 450ms ease; }
+  .js .lede[data-fill] span.is-inked { color: var(--ink); }
+
+  /* ── chapter two: the slip settles like fresh paste ────────────── */
+  .js .adslot { opacity: 0; transform: translateY(22px) rotate(1deg); transition: opacity 750ms var(--ease-expo), transform 900ms var(--ease-expo); }
+  .js .adslot-stage.in .adslot { opacity: 1; transform: rotate(-1.6deg); }
+  .js .never-note { opacity: 0; transform: translateY(26px) rotate(4.2deg); transition: opacity 750ms var(--ease-expo) 150ms, transform 900ms var(--ease-expo) 150ms; }
+  .js .adslot-stage.in .never-note { opacity: 1; transform: rotate(1.1deg); }
+
+  /* ── chapter three: the cards deal in row by row ───────────────── */
+  .js .feature {
+    opacity: 0; transform: translateY(26px);
+    transition: opacity 700ms var(--ease-expo), transform 850ms var(--ease-expo);
+    transition-delay: calc(var(--i, 0) * 75ms);
+  }
+  .js .feature-grid.in .feature { opacity: 1; transform: none; }
+
+  /* ── chapter five: teasers slide from their sides ──────────────── */
+  .js .teaser { opacity: 0; transition: opacity 850ms var(--ease-expo), transform 950ms var(--ease-expo); }
+  .js .teaser:nth-child(1) { transform: translateX(-46px); }
+  .js .teaser:nth-child(2) { transform: translateX(46px); }
+  .js .teaser-grid.in .teaser { opacity: 1; transform: none; }
+  .js .teaser-grid.in .teaser:nth-child(2) { transition-delay: 120ms; }
+
+  /* ── chapter six: the chips cascade once the pop-up stands ─────── */
+  .js .spread:not(.open) .tchip { opacity: 0; }
+  .js .spread.open .tchip {
+    opacity: 0; transform: translateY(14px);
+    animation: chip-in 550ms var(--ease-out) forwards;
+    animation-delay: calc(980ms + var(--i, 0) * 70ms);
+  }
+
+  /* ── chapter seven: the three ways in rise one after another ───── */
+  .js .badge-row-center > *, .js .platform-chips > * {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 700ms var(--ease-expo), transform 850ms var(--ease-expo);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  .js .badge-row-center.in > *, .js .platform-chips.in > * { opacity: 1; transform: none; }
+  .js .platform-chips > * { transition-delay: calc(200ms + var(--i, 0) * 80ms); }
+}
+
+@keyframes word-rise { to { transform: none; } }
+@keyframes load-rise { to { opacity: 1; transform: none; } }
+@keyframes phone-in { to { opacity: 1; transform: none; } }
+@keyframes chip-in { to { opacity: 1; transform: none; } }

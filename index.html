@@ -35,6 +35,7 @@
 </noscript>
 <script>
 (function () {
+  document.documentElement.classList.add("js");
   try {
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (sessionStorage.wbSeen || reduced || navigator.webdriver) document.documentElement.classList.add("skip-cover");
@@ -147,7 +148,12 @@
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">A Bible that reads like paper</p>
-        <h1 class="hero-title"><span>Be</span> <span>still,</span> <span>and</span> <span>read.</span></h1>
+        <h1 class="hero-title" aria-label="Be still, and read.">
+          <span class="ht-mask" aria-hidden="true"><span class="ht-word" style="--w:0">Be</span></span>
+          <span class="ht-mask" aria-hidden="true"><span class="ht-word" style="--w:1">still,</span></span>
+          <span class="ht-mask" aria-hidden="true"><span class="ht-word" style="--w:2">and</span></span>
+          <span class="ht-mask" aria-hidden="true"><span class="ht-word" style="--w:3">read.</span></span>
+        </h1>
         <p class="hero-sub">Watchers Bible puts the whole Word on your phone with a paper-white page, print&#8209;grade ink and not a single distraction &mdash; easy on the eyes, like reading a real book. No ads. No noise. Just you and the Scriptures.</p>
         <div class="badge-row">
           <a class="badge" href="#play-store" aria-label="Get it on Google Play">
@@ -217,7 +223,7 @@
     <div class="wrap">
       <p class="chapter-label">Chapter One</p>
       <h2 class="ink-soak">Easy on the eyes, like a real book.</h2>
-      <p class="lede">The Paper theme turns your screen into a printed page: soft paper texture, glare&#8209;free, no backlight burning at your face. Reading feels like a real book &mdash; no flicker, no blue light at midnight, no eye strain at hour two. Just ink resting on paper.</p>
+      <p class="lede" data-fill>The Paper theme turns your screen into a printed page: soft paper texture, glare&#8209;free, no backlight burning at your face. Reading feels like a real book &mdash; no flicker, no blue light at midnight, no eye strain at hour two. Just ink resting on paper.</p>
 
       <div class="compare card-sheet">
         <div class="cmp cmp-lcd" aria-hidden="true">
