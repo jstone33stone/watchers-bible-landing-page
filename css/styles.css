@@ -434,6 +434,25 @@ html.skip-cover .cover { display: none; }
   mask-image: var(--paper-fine), linear-gradient(#000, #000);
   -webkit-mask-image: var(--paper-fine), linear-gradient(#000, #000);
 }
+
+/* the never-note: a pasted slip of ad-speak, struck through in ink */
+.never-note {
+  max-width: 46ch; margin: 0 auto;
+  font-style: italic; font-size: 16.5px; line-height: 2;
+  color: var(--ink);
+  background: var(--paper);
+  background-image: var(--paper-fine), var(--paper-fiber);
+  border: 1px solid var(--line); border-radius: 4px;
+  padding: 20px 28px;
+  transform: rotate(1.1deg);
+  box-shadow: var(--shadow-card);
+}
+.never-note s {
+  color: var(--ink-mut);
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--graphite);
+  white-space: nowrap;
+}
 .stamp.in { animation: stamp-land 0.55s var(--ease-out) forwards; }
 @keyframes stamp-land {
   0% { opacity: 0; transform: rotate(-2deg) scale(1.35); }
@@ -527,7 +546,7 @@ html.skip-cover .cover { display: none; }
   padding: 30px 28px 26px; text-align: center;
 }
 .teaser-art { width: 150px; margin: 0 auto 18px; }
-.teaser-head { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 10px; }
+.teaser-head { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 10px; }
 .teaser h3 { font-family: var(--display); font-weight: 500; font-size: 21px; }
 .coming {
   font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700;
@@ -801,4 +820,6 @@ body::after {
   .folio { display: none; }
   .cloud-2 { display: none; }
   .cloud-1 { width: 110px; top: 10%; left: 3%; }
+  /* doves would fly across the hero copy on a phone */
+  .dove { display: none; }
 }
