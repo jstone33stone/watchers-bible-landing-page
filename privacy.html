@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy · Watchers Bible</title>
+<meta name="description" content="How Watchers Bible handles your data: local-first by default, optional sync, optional anonymous statistics. No ads, no tracking, no selling data.">
+<meta name="theme-color" content="#dbdcd6">
+<link rel="icon" href="favicon.ico">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    min-height: 100vh;
+  }
+  .doc { max-width: 680px; margin: 0 auto; padding: 56px 24px 72px; }
+  .doc-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 40px; }
+  .doc-brand {
+    font-family: var(--display); font-weight: 500; font-size: 20px;
+    color: var(--ink); text-decoration: none; letter-spacing: 0.01em;
+  }
+  .doc-back { font-size: 14px; color: var(--ink-mut); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 1px; }
+  .doc-back:hover { color: var(--ink); }
+  .doc h1 {
+    font-family: var(--display); font-weight: 400; font-size: clamp(30px, 5vw, 40px);
+    line-height: 1.15; margin-bottom: 8px;
+  }
+  .doc .effective { font-size: 14px; color: var(--ink-mut); margin-bottom: 36px; }
+  .doc h2 {
+    font-family: var(--display); font-weight: 500; font-size: 19px;
+    margin: 34px 0 10px; padding-top: 18px; border-top: 1px solid var(--line);
+  }
+  .doc p, .doc li { font-size: 16px; line-height: 1.7; color: var(--ink); }
+  .doc p { margin-bottom: 12px; }
+  .doc ul { margin: 0 0 12px 22px; }
+  .doc li { margin-bottom: 6px; }
+  .doc strong { font-weight: 600; }
+  .doc a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+  .doc a:hover { text-decoration-color: var(--ink); }
+  .doc .quiet { color: var(--ink-mut); font-size: 14px; }
+  .doc-footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="doc-top">
+    <a class="doc-brand" href="/">Watchers Bible</a>
+    <a class="doc-back" href="/">&larr; Back to the site</a>
+  </div>
+
+  <h1>Privacy policy</h1>
+  <p class="effective">Effective date: November 5, 2026</p>
+
+  <p>Watchers Bible ("the app", "we") is a Bible reading app built to be
+  private by default. Your Bibles, highlights, notes and bookmarks live on
+  your device. This page explains exactly what the app stores, what it
+  optionally shares, and what it never does.</p>
+
+  <p class="quiet">Contact: <a href="mailto:jstone33.jacob@gmail.com">jstone33.jacob@gmail.com</a></p>
+
+  <h2>The short version</h2>
+  <ul>
+    <li>Your reading is yours. Bibles, highlights, notes, bookmarks and reading positions are stored on your device and are never read by us.</li>
+    <li>Cloud sync is optional. Nothing leaves your device unless you sign in and turn sync on.</li>
+    <li>Usage statistics are anonymous and optional. They contain no account, no email and no reading content, and you can turn them off anytime in the app.</li>
+    <li>No ads. No tracking across other apps or websites. No selling of data, ever.</li>
+  </ul>
+
+  <h2>What the app stores on your device</h2>
+  <p>The app works fully offline. The following data lives only on your device:</p>
+  <ul>
+    <li>Downloaded Bible translations and the bundled KJV.</li>
+    <li>Highlights, notes and bookmarks you create.</li>
+    <li>Your reading position, preferences and appearance settings.</li>
+    <li>A random, meaningless identifier used only for anonymous statistics (see below).</li>
+  </ul>
+  <p>Uninstalling the app removes this data from your device. Deleting the
+  app's downloaded translations via Settings, Data &amp; storage does not
+  touch your highlights, notes or bookmarks.</p>
+
+  <h2>Optional cloud sync</h2>
+  <p>If you choose to sign in (with Google or email) and use cloud sync, your
+  highlights, notes, bookmarks and reading positions are stored on our backend
+  (hosted on Vercel and Neon, database and authentication managed by Neon in
+  the AWS US region) so they can follow you between your devices.</p>
+  <p>We store the minimum needed for sync: your account identifier, your
+  display name and email address from the sign-in provider (so your account
+  can be listed in Settings), and the sync content listed above. We do not
+  read the content of your notes beyond what is technically required to sync
+  them.</p>
+  <p>You can delete your account and all synced data at any time from the app
+  (Settings, Backup &amp; sync), which removes your account and every synced
+  row from our servers immediately.</p>
+
+  <h2>Optional anonymous usage statistics</h2>
+  <p>To understand how the app is used and what to improve, the app can send
+  anonymous usage statistics to PostHog (PostHog Inc., cloud-hosted in the
+  United States). This feature is controlled by the "Share anonymous usage
+  statistics" toggle in Settings, Data &amp; storage.</p>
+  <p>What is collected while the toggle is on:</p>
+  <ul>
+    <li>A random install identifier that is not connected to your account, email or identity in any way.</li>
+    <li>The app version and platform (Android, iOS or web).</li>
+    <li>Anonymous events such as: app opens, that a chapter was opened (which translation and Bible book, not what you did with it), that a translation was downloaded, that a verse image was saved, that a daily verse notification or widget was tapped, and that a sign-in was completed.</li>
+    <li>An approximate country, derived from IP address by the analytics provider, to know which languages matter. Full IP addresses are not stored in analytics events.</li>
+  </ul>
+  <p>What is never collected:</p>
+  <ul>
+    <li>Your name, email or account identifier.</li>
+    <li>The content of your notes, highlights or bookmarks.</li>
+    <li>The specific verses you read or saved.</li>
+    <li>Advertising identifiers, contacts, photos, location or anything else on your device.</li>
+  </ul>
+  <p>Turning the toggle off stops all collection immediately and erases
+  anything already queued on your device.</p>
+
+  <h2>Bible downloads</h2>
+  <p>Downloaded translations stream from our storage host (Cloudflare R2).
+  These downloads are anonymous file transfers and carry no information about
+  you beyond what any HTTPS connection technically involves.</p>
+
+  <h2>Notifications</h2>
+  <p>If you enable it, the daily verse notification and home screen widget are
+  generated on your device from the bundled Bible text. They involve no
+  network connection and no data collection.</p>
+
+  <h2>Children</h2>
+  <p>Watchers Bible is a general-audience app and does not knowingly collect
+  any personal information from anyone, including children under 13. Accounts
+  are only created by a deliberate sign-in, and the data collected is
+  described above.</p>
+
+  <h2>Your rights</h2>
+  <p>You control your data:</p>
+  <ul>
+    <li>Local data: stored on your device; uninstall or use Settings, Data &amp; storage to manage it.</li>
+    <li>Synced data: delete your account and all cloud data from Settings, Backup &amp; sync.</li>
+    <li>Statistics: turn off the toggle in Settings, Data &amp; storage; the identifier is random and cannot be traced back to you, so no other deletion is possible or needed.</li>
+  </ul>
+  <p>If you have a privacy question or request, contact us at
+  <a href="mailto:jstone33.jacob@gmail.com">jstone33.jacob@gmail.com</a>.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, the updated version will be posted on this page
+  with a new effective date. Material changes will also be announced in the
+  app.</p>
+
+  <div class="doc-footer">
+    <p class="quiet">Watchers Bible &middot; Built with grace by Apostolic Intelligence</p>
+  </div>
+</main>
+</body>
+</html>
