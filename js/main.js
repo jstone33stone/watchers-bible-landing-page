@@ -44,10 +44,11 @@
     ".compare", ".stat-row", ".adslot-stage", ".stamp",
     ".feature-grid", ".teaser-grid", ".shelf-stage", ".spread",
     ".badge-row-center", ".platform-chips", ".footnote",
+    ".type-proof", ".widget-stage", ".search-demo",
     ".chapter-label", ".lede:not([data-fill])"
   ];
   /* containers whose children are choreographed in CSS: they take .in, never .rv */
-  var CHOREO = ".compare, .adslot-stage, .feature-grid, .teaser-grid, .badge-row-center, .platform-chips";
+  var CHOREO = ".compare, .adslot-stage, .feature-grid, .teaser-grid, .badge-row-center, .platform-chips, .type-proof, .widget-stage, .search-demo";
   var REVEAL_SELECTOR = ".ink-soak, .rv, .stat, .stamp, .shelf-stage, .spread, .cmp-paper, .h2-flourish, " + CHOREO + ", .chapter-label, .lede:not([data-fill])";
   var revealEls = document.querySelectorAll(toReveal.join(","));
   revealEls.forEach(function (el) {
@@ -65,9 +66,10 @@
       var el = en.target;
       el.classList.add("in");
       if (el.classList.contains("spread")) el.classList.add("open"); /* pop-up book */
+      if (el.classList.contains("search-demo")) startSearch(el); /* concordance retype */
       io.unobserve(el);
     });
-  }, { threshold: 0.3, rootMargin: "0px 0px -8% 0px" });
+  }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
 
   document.querySelectorAll(REVEAL_SELECTOR).forEach(function (el) { io.observe(el); });
 
@@ -86,6 +88,7 @@
       if (r.top < vh * 0.96 && r.bottom > 0) {
         el.classList.add("in");
         if (el.classList.contains("spread")) el.classList.add("open");
+        if (el.classList.contains("search-demo")) startSearch(el);
         return false;
       }
       return true;
@@ -93,6 +96,29 @@
   }
   [800, 2000, 4000].forEach(function (t) { setTimeout(sweepReveals, t); });
   window.addEventListener("load", sweepReveals);
+
+  /* jump-and-stop safety net: anchor links, the End key, find-in-page and
+     fast flicks all land without the sections between ever intersecting.
+     When scrolling settles, reveal anything within reach of the stop so a
+     landed reader never finds a chapter still holding its breath. */
+  var stopTimer = null;
+  window.addEventListener("scroll", function () {
+    if (stopTimer) clearTimeout(stopTimer);
+    stopTimer = setTimeout(function () {
+      var vh = window.innerHeight;
+      pendingReveals = pendingReveals.filter(function (el) {
+        if (el.classList.contains("in")) return false;
+        var r = el.getBoundingClientRect();
+        if (r.top < vh * 1.6 && r.bottom > -vh * 0.5) {
+          el.classList.add("in");
+          if (el.classList.contains("spread")) el.classList.add("open");
+          if (el.classList.contains("search-demo")) startSearch(el);
+          return false;
+        }
+        return true;
+      });
+    }, 380);
+  }, { passive: true });
 
   /* ── 2c. hero phone: real screenshots flipping like e-ink pages ── */
   var heroPhone = document.querySelector(".phone-hero");
@@ -146,7 +172,7 @@
 
   /* ── 3b. quill flourish under every chapter heading + ghost numerals ── */
   var SVG_NS = "http://www.w3.org/2000/svg";
-  var ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
+  var ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
   document.querySelectorAll(".chapter").forEach(function (ch, i) {
     var h2 = ch.querySelector("h2");
     if (h2) {
@@ -185,6 +211,77 @@
   document.querySelectorAll(".theme-chips").forEach(function (row) {
     row.querySelectorAll(".tchip").forEach(function (c, i) { c.style.setProperty("--i", i); });
   });
+
+  /* ── 4b. the concordance demo: retype the query, deal the rows in ── */
+  var sd = document.getElementById("searchDemo");
+  var sdQuery = document.getElementById("sdQuery");
+  var SD_WORD = "light";
+  var sdBusy = false;
+  function startSearch(demo) {
+    if (reduced || isBot || !demo || !sdQuery || sdBusy) return;
+    sdBusy = true;
+    demo.classList.add("sd-anim"); /* rows stand down (CSS delays reset) */
+    sdQuery.textContent = "";
+    var i = 0;
+    var t = setInterval(function () {
+      i++;
+      sdQuery.textContent = SD_WORD.slice(0, i);
+      if (i >= SD_WORD.length) {
+        clearInterval(t);
+        setTimeout(function () {
+          demo.classList.remove("sd-anim"); /* rows deal back in */
+          sdBusy = false;
+        }, 420);
+      }
+    }, 150);
+  }
+  if (sd && sdQuery) {
+    sd.addEventListener("click", function () { startSearch(sd); });
+  }
+
+  /* ── 4c. the typography proof: six typefaces, size steps, drop cap ─ */
+  var tpPage = document.getElementById("tpPage");
+  var tpVerse = document.getElementById("tpVerse");
+  var tpSizeEl = document.getElementById("tpSize");
+  var tpDropBtn = document.getElementById("tpDrop");
+  var tpSize = 17;
+  var tpOriginal = tpVerse ? tpVerse.innerHTML : "";
+  document.querySelectorAll(".tp-chip[data-font]").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      document.querySelectorAll(".tp-chip[data-font]").forEach(function (c) {
+        c.classList.remove("is-on");
+      });
+      chip.classList.add("is-on");
+      if (tpPage) tpPage.style.fontFamily = chip.getAttribute("data-font");
+    });
+  });
+  document.querySelectorAll(".tp-step").forEach(function (step) {
+    step.addEventListener("click", function () {
+      tpSize = Math.min(30, Math.max(15, tpSize + parseInt(step.getAttribute("data-step"), 10)));
+      if (tpSizeEl) tpSizeEl.textContent = String(tpSize);
+      if (tpPage) tpPage.style.setProperty("--tp-size", tpSize + "px");
+      document.querySelectorAll(".tp-step").forEach(function (s) {
+        var v = parseInt(s.getAttribute("data-step"), 10);
+        s.disabled = (v < 0 && tpSize <= 15) || (v > 0 && tpSize >= 30);
+      });
+    });
+  });
+  if (tpDropBtn && tpVerse) {
+    tpDropBtn.addEventListener("click", function () {
+      var on = tpDropBtn.getAttribute("aria-pressed") !== "true";
+      tpDropBtn.setAttribute("aria-pressed", String(on));
+      tpDropBtn.classList.toggle("is-on", on);
+      if (on) {
+        /* wrap the verse's first letter like the app's chapter opening */
+        tpVerse.innerHTML = tpOriginal.replace(
+          /^(<span class="tp-num">105<\/span>)([A-Za-z])([\s\S]*)$/,
+          '$1<span class="tp-dropcap">$2</span>$3'
+        );
+      } else {
+        tpVerse.innerHTML = tpOriginal;
+      }
+    });
+  }
 
   /* ── 3d. the paper-comfort statement: split into words so the
      scroll can ink them in (skipped for reduced motion) ──────────── */
@@ -330,7 +427,7 @@
   /* ── 8. ink blot easter egg ────────────────────────────────────── */
   if (!reduced) {
     document.addEventListener("click", function (e) {
-      if (e.target.closest("a, button, .phone, .mini-phone, .shots-strip, .shelf, .tchip, .feature, .teaser, .compare, .topbar")) return;
+      if (e.target.closest("a, button, .phone, .mini-phone, .shots-strip, .shelf, .tchip, .feature, .teaser, .compare, .topbar, .search-demo, .type-proof, .widget-stage")) return;
       var b = document.createElement("span");
       b.className = "blot";
       b.style.left = e.clientX + "px";

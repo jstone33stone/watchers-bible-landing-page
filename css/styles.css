@@ -150,6 +150,7 @@ html.skip-cover .cover { display: none; }
   display: inline-flex; align-items: center; gap: 9px;
   font-family: var(--serif); font-weight: 600; font-size: 15px;
   text-decoration: none; border-radius: 999px; cursor: pointer;
+  white-space: nowrap;
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 .btn-ink {
@@ -277,7 +278,7 @@ html.skip-cover .cover { display: none; }
 .dots { display: flex; gap: 12px; }
 .dot {
   position: relative;
-  width: 24px; height: 24px;
+  width: 44px; height: 44px;
   border: 0; background: transparent;
   cursor: pointer; padding: 0;
   display: inline-flex; align-items: center; justify-content: center;
@@ -589,7 +590,8 @@ html.skip-cover .cover { display: none; }
   font-family: var(--serif); font-size: 13.5px; font-weight: 600; letter-spacing: 0.04em;
   color: var(--ink); background: var(--sheet-2);
   border: 1px solid var(--line); border-radius: 999px;
-  padding: 9px 20px; cursor: pointer;
+  padding: 9px 20px; min-height: 44px; cursor: pointer;
+  display: inline-flex; align-items: center;
   box-shadow: 0 2px 5px rgba(22,23,20,0.12);
   transition: transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease-out), background 0.22s;
 }
@@ -921,3 +923,296 @@ body::after {
 @keyframes load-rise { to { opacity: 1; transform: none; } }
 @keyframes phone-in { to { opacity: 1; transform: none; } }
 @keyframes chip-in { to { opacity: 1; transform: none; } }
+
+/* ════════════════════════════════════════════════════════════════════
+   v4 · feature chapters — the home-screen widget, the 7:00 knock,
+   the concordance, and the typography proof. Same contract as v3:
+   hidden states live only inside .js + prefers-reduced-motion:
+   no-preference, so no-JS and reduced-motion visitors get the
+   finished page.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── honest store badges: the iOS chip and the Play "soon" tag ────── */
+.badge-soon {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 57px; padding: 0 22px;
+  border: 1.5px dashed var(--line); border-radius: 10px;
+  color: var(--ink-mut); font-style: italic; font-size: 14px;
+  background: var(--sheet);
+  background-image: var(--paper-fine);
+}
+.badge-soon svg { width: 19px; height: 19px; stroke: var(--ink-mut); }
+.badge-wait { position: relative; pointer-events: none; overflow: visible; }
+.badge-wait-tag {
+  position: absolute; top: -11px; right: -9px;
+  background: var(--paper); background-image: var(--paper-fine);
+  border: 1px solid var(--line); border-radius: 3px;
+  color: var(--ink); font-size: 9.5px; font-style: italic; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 3px 9px; transform: rotate(3deg);
+  box-shadow: var(--shadow-card);
+}
+
+/* ── chapter four: widget home screen + notification ──────────────── */
+.widget-stage {
+  display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 20px;
+  margin: 0;
+}
+.wg-panel {
+  border: 1px solid var(--line); border-radius: 16px;
+  padding: 24px 24px 18px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.wg-home { background-color: var(--paper); background-image: var(--paper-fine), var(--paper-fiber); }
+.wg-statusbar {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12.5px; font-weight: 600; letter-spacing: 0.05em; color: var(--ink);
+}
+.wg-sig { width: 40px; height: 12px; }
+.wg-widget {
+  background: var(--sheet);
+  background-image: var(--paper-fine), var(--paper-fiber);
+  border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  padding: 15px 17px 13px;
+}
+.wg-midrow { display: flex; gap: 12px; align-items: stretch; }
+.wg-compact { flex: 1.05; display: flex; flex-direction: column; }
+.wg-compact .wg-verse { font-size: 12.5px; margin-top: 6px; }
+.wg-compact .wg-eyebrow { font-size: 8.5px; letter-spacing: 0.12em; }
+.wg-apps {
+  flex: 1; border: 1.5px dashed var(--line); border-radius: 14px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 8px;
+  padding: 16px 14px; align-content: center; justify-items: center;
+}
+.wg-apps i { width: 17px; height: 17px; border-radius: 6px; border: 1.5px solid var(--ink-mut); opacity: 0.3; }
+.wg-eyebrow {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--graph-2);
+}
+.wg-spark { width: 10px; height: 10px; fill: var(--graph-2); flex-shrink: 0; }
+.wg-verse { font-size: 15.5px; line-height: 1.62; margin-top: 8px; }
+.wg-brand {
+  display: flex; align-items: center; gap: 5px; margin-top: 11px;
+  font-size: 8.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-mut);
+}
+.wg-brand .wg-spark { width: 8px; height: 8px; }
+.wg-dock {
+  display: flex; justify-content: center; gap: 12px;
+  width: fit-content; margin: 2px auto 0; padding: 9px 16px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--sheet); background-image: var(--paper-fine);
+  box-shadow: var(--shadow-card);
+}
+.wg-dock i { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid var(--ink-mut); opacity: 0.45; }
+.wg-dock i:first-child { background: var(--graphite); border-color: var(--graphite); opacity: 1; }
+.notif-card {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--sheet);
+  background-image: var(--paper-fine), var(--paper-fiber);
+  border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  padding: 15px 17px;
+}
+.notif-seal {
+  width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
+  background: var(--graphite);
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.notif-seal img { width: 22px; height: 22px; object-fit: contain; filter: grayscale(1) brightness(1.7); }
+.notif-app { font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mut); }
+.notif-title { font-size: 15px; font-weight: 600; margin-top: 3px; }
+.notif-text { font-size: 13.5px; line-height: 1.55; margin-top: 2px; }
+.notif-action { font-size: 12px; font-style: italic; color: var(--ink-mut); margin-top: 9px; }
+.wg-side { max-width: 58ch; font-size: 14.5px; line-height: 1.75; color: var(--ink-mut); margin-top: 2px; }
+
+/* ── chapter five: the concordance demo ───────────────────────────── */
+.search-demo {
+  max-width: 620px; margin: 0 auto;
+  border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden; cursor: pointer;
+}
+.sd-field {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 18px;
+  background: var(--paper); background-image: var(--paper-fine), var(--paper-fiber);
+  border-bottom: 1px solid var(--line);
+}
+.sd-glass { width: 18px; height: 18px; flex-shrink: 0; }
+.sd-query { font-size: 16.5px; min-height: 1.45em; }
+.sd-caret { width: 2px; height: 1.15em; background: var(--ink); display: inline-block; margin-left: 1px; vertical-align: text-bottom; }
+.sd-pill {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-mut); border: 1px solid var(--line); border-radius: 6px;
+  padding: 3px 8px;
+}
+.sd-status {
+  padding: 9px 18px;
+  font-size: 11.5px; font-style: italic; letter-spacing: 0.05em; color: var(--ink-mut);
+  border-bottom: 1px solid rgba(22,23,20,0.12);
+}
+.sd-head {
+  padding: 14px 18px 4px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-mut);
+}
+.sd-row { padding: 12px 18px 13px; border-bottom: 1px solid rgba(22,23,20,0.1); }
+.sd-ref {
+  display: block; margin-bottom: 3px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--graph-2);
+}
+.sd-text { font-size: 15px; line-height: 1.62; }
+.search-demo mark { background: rgba(38,40,34,0.16); color: inherit; border-radius: 3px; padding: 0 2px; }
+.sd-tail { padding: 12px 18px 16px; font-size: 13px; font-style: italic; text-align: center; color: var(--ink-mut); }
+
+/* ── chapter one: the typography proof ────────────────────────────── */
+.type-proof {
+  margin: 22px 0 0;
+  border: 1px solid var(--line); border-radius: 16px;
+  padding: 30px 30px 24px;
+}
+.tp-head { text-align: center; margin-bottom: 24px; }
+.tp-title { font-family: var(--display); font-size: 22px; font-weight: 500; }
+.tp-sub { font-size: 14px; color: var(--ink-mut); margin-top: 4px; }
+.tp-body {
+  display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 26px;
+  align-items: stretch;
+}
+.tp-page {
+  background: var(--paper); background-image: var(--paper-fine), var(--paper-fiber);
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px var(--line), 0 4px 14px rgba(22,23,20,0.08);
+  padding: 26px 24px; min-height: 250px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.tp-eyebrow {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-mut); margin-bottom: 12px;
+}
+.tp-verse {
+  font-family: var(--tp-font, var(--serif));
+  font-size: var(--tp-size, 17px);
+  line-height: 1.75;
+}
+.tp-num { font-size: 0.62em; font-weight: 600; vertical-align: 0.3em; color: var(--ink-mut); margin-right: 0.4em; }
+.tp-dropcap {
+  float: left;
+  font-family: var(--display); font-weight: 500;
+  font-size: 2.9em; line-height: 0.82;
+  padding: 0.05em 0.12em 0 0;
+  color: var(--ink);
+}
+.tp-controls { display: flex; flex-direction: column; gap: 20px; justify-content: center; }
+.tp-row { display: flex; flex-direction: column; gap: 9px; }
+.tp-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-mut);
+}
+.tp-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tp-chip {
+  font-family: inherit; font-size: 13.5px;
+  color: var(--ink); background: var(--sheet-2); background-image: var(--paper-fine);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 16px; min-height: 44px; cursor: pointer;
+  display: inline-flex; align-items: center;
+  box-shadow: 0 2px 5px rgba(22,23,20,0.12);
+  transition: background 0.22s, color 0.22s, border-color 0.22s;
+}
+.tp-chip:hover { border-color: var(--graph-2); }
+.tp-chip.is-on { background: var(--graphite); color: #eceee6; border-color: var(--graphite); }
+.tp-size { display: flex; align-items: center; gap: 12px; }
+.tp-step {
+  width: 44px; height: 44px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--sheet-2); background-image: var(--paper-fine);
+  color: var(--ink); font-size: 19px; cursor: pointer;
+  box-shadow: 0 2px 5px rgba(22,23,20,0.12);
+  transition: background 0.22s;
+}
+.tp-step:hover { background: var(--sheet); }
+.tp-step:disabled { opacity: 0.4; cursor: default; }
+.tp-readout { font-size: 14px; color: var(--ink-mut); min-width: 56px; text-align: center; font-variant-numeric: tabular-nums; }
+.tp-note { max-width: 62ch; margin: 22px auto 0; text-align: center; font-size: 13px; font-style: italic; color: var(--ink-mut); }
+
+/* marginalia for the new chapters */
+.m-bell { top: 140px; right: 4%;    width: 26px; }
+.m-lens { bottom: 180px; left: 3%;  width: 30px; }
+
+/* ── v4 choreography (same contract as v3) ────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero .badge-row .badge-soon {
+    opacity: 0; transform: translateY(16px);
+    animation: load-rise 650ms var(--ease-out) 1030ms forwards;
+  }
+
+  /* chapter one: the proof card rises, its chips cascade after */
+  .js .type-proof {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 750ms var(--ease-expo), transform 900ms var(--ease-expo);
+  }
+  .js .type-proof.in { opacity: 1; transform: none; }
+  .js .tp-chip, .js .tp-step {
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 600ms var(--ease-expo), transform 700ms var(--ease-expo),
+                background 0.22s, color 0.22s, border-color 0.22s;
+    transition-delay: calc(260ms + var(--i, 0) * 60ms);
+  }
+  .js .type-proof.in .tp-chip, .js .type-proof.in .tp-step { opacity: 1; transform: none; }
+
+  /* chapter four: panels slide from their sides, cards deal in, the
+     knock drops into the shade from above */
+  .js .wg-panel {
+    opacity: 0; transition: opacity 850ms var(--ease-expo), transform 950ms var(--ease-expo);
+  }
+  .js .wg-home { transform: translateX(-46px); }
+  .js .wg-notif { transform: translateX(46px); }
+  .js .widget-stage.in .wg-panel { opacity: 1; transform: none; }
+  .js .widget-stage.in .wg-notif { transition-delay: 130ms; }
+  .js .wg-widget, .js .notif-card {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 700ms var(--ease-expo), transform 850ms var(--ease-expo);
+    transition-delay: calc(300ms + var(--i, 0) * 120ms);
+  }
+  .js .widget-stage.in .wg-widget, .js .widget-stage.in .notif-card { opacity: 1; transform: none; }
+  .js .widget-stage.in .notif-card { transition-delay: 620ms; }
+
+  /* chapter five: the demo rises, then JS retypes the query while the
+     rows stand down; removing .sd-anim deals them back in */
+  .js .search-demo {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 750ms var(--ease-expo), transform 900ms var(--ease-expo);
+  }
+  .js .search-demo.in { opacity: 1; transform: none; }
+  .js .search-demo .sd-row, .js .search-demo .sd-head, .js .search-demo .sd-tail, .js .search-demo .sd-status {
+    transition: opacity 600ms var(--ease-expo), transform 700ms var(--ease-expo);
+    transition-delay: calc(var(--i, 0) * 95ms);
+  }
+  .js .search-demo.sd-anim .sd-row, .js .search-demo.sd-anim .sd-head,
+  .js .search-demo.sd-anim .sd-tail, .js .search-demo.sd-anim .sd-status {
+    opacity: 0; transform: translateY(10px);
+    transition-delay: 0ms;
+  }
+  .js .sd-caret { animation: caret-blink 1.05s steps(1) infinite; }
+}
+@keyframes caret-blink { 50% { opacity: 0; } }
+
+/* ── v4 responsive ────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .widget-stage { grid-template-columns: 1fr; }
+  .tp-body { grid-template-columns: 1fr; }
+  .tp-page { min-height: 200px; }
+}
+@media (max-width: 640px) {
+  .wg-panel { padding: 18px 14px 14px; }
+  .widget-stage { gap: 14px; }
+  .wg-apps { display: none; }
+  .type-proof { padding: 22px 16px 18px; }
+  .tp-body { gap: 18px; }
+  .tp-controls { gap: 16px; }
+  .badge-soon { min-height: 50px; padding: 0 16px; font-size: 13px; }
+}
