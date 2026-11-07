@@ -127,8 +127,9 @@
   var heroCaption = document.getElementById("heroCaption");
   var HERO_CAPTIONS = [
     "Home · the verse of the day",
-    "Bible · Genesis 1, in your ink",
+    "Bible · 2 Corinthians 7, in your ink",
     "Library · highlights and notes",
+    "Search · 341 matches for \u201Clove\u201D",
     "Settings · the Paper theme"
   ];
   var heroIdx = 0, heroTimer = null;
