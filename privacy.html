@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy · Watchers Bible</title>
-<meta name="description" content="How Watchers Bible handles your data: local-first by default, optional sync, optional anonymous statistics. No ads, no tracking, no selling data.">
+<meta name="description" content="How Watchers Bible handles your data: local-first by default, optional sync, optional anonymous statistics and crash reports. No ads, no tracking, no selling data.">
 <meta name="theme-color" content="#dbdcd6">
 <link rel="icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -55,7 +55,7 @@
   </div>
 
   <h1>Privacy policy</h1>
-  <p class="effective">Effective date: November 5, 2026</p>
+  <p class="effective">Effective date: November 7, 2026</p>
 
   <p>Watchers Bible ("the app", "we") is a Bible reading app built to be
   private by default. Your Bibles, highlights, notes and bookmarks live on
@@ -66,9 +66,10 @@
 
   <h2>The short version</h2>
   <ul>
-    <li>Your reading is yours. Bibles, highlights, notes, bookmarks and reading positions are stored on your device and are never read by us.</li>
+    <li>Your reading is yours. Bibles, highlights, notes, bookmarks, search history and reading positions are stored on your device and are never read by us.</li>
+    <li>Search never leaves your device. The app searches only the Bibles stored on it; your search words are never sent anywhere.</li>
     <li>Cloud sync is optional. Nothing leaves your device unless you sign in and turn sync on.</li>
-    <li>Usage statistics are anonymous and optional. They contain no account, no email and no reading content, and you can turn them off anytime in the app.</li>
+    <li>Anonymous and optional statistics. One toggle in Settings controls both usage statistics and crash reports. They contain no account, no email and no reading content, and you can turn them off anytime.</li>
     <li>No ads. No tracking across other apps or websites. No selling of data, ever.</li>
   </ul>
 
@@ -77,12 +78,19 @@
   <ul>
     <li>Downloaded Bible translations and the bundled KJV.</li>
     <li>Highlights, notes and bookmarks you create.</li>
-    <li>Your reading position, preferences and appearance settings.</li>
+    <li>Your reading position, search history, preferences and appearance settings.</li>
     <li>A random, meaningless identifier used only for anonymous statistics (see below).</li>
   </ul>
   <p>Uninstalling the app removes this data from your device. Deleting the
-  app's downloaded translations via Settings, Data &amp; storage does not
+  app's downloaded translations via Settings &rarr; Data &amp; storage does not
   touch your highlights, notes or bookmarks.</p>
+
+  <h2>Features that never touch the internet</h2>
+  <p>Reading, searching, read-aloud narration, the daily verse notification,
+  the home screen widget, and saving a verse as a shareable image all happen
+  entirely on your device. Read-aloud speaks through your device's built-in
+  speech engine. None of these features send data anywhere, and every one of
+  them works with airplane mode on.</p>
 
   <h2>Optional cloud sync</h2>
   <p>If you choose to sign in (with Google or email) and use cloud sync, your
@@ -95,40 +103,52 @@
   read the content of your notes beyond what is technically required to sync
   them.</p>
   <p>You can delete your account and all synced data at any time from the app
-  (Settings, Backup &amp; sync), which removes your account and every synced
+  (Settings &rarr; Backup &amp; sync), which removes your account and every synced
   row from our servers immediately.</p>
 
   <h2>Optional anonymous usage statistics</h2>
   <p>To understand how the app is used and what to improve, the app can send
   anonymous usage statistics to PostHog (PostHog Inc., cloud-hosted in the
   United States). This feature is controlled by the "Share anonymous usage
-  statistics" toggle in Settings, Data &amp; storage.</p>
+  statistics" toggle in Settings &rarr; Data &amp; storage.</p>
   <p>What is collected while the toggle is on:</p>
   <ul>
     <li>A random install identifier that is not connected to your account, email or identity in any way.</li>
-    <li>The app version and platform (Android, iOS or web).</li>
-    <li>Anonymous events such as: app opens, that a chapter was opened (which translation and Bible book, not what you did with it), that a translation was downloaded, that a verse image was saved, that a daily verse notification or widget was tapped, and that a sign-in was completed.</li>
+    <li>The app version and platform (Android or web).</li>
+    <li>Anonymous events such as: app opens, that a chapter was opened (which translation and Bible book, not what you did with it), that a translation was downloaded, that a verse image was saved, that a daily verse notification or widget was tapped, that a sign-in was completed, and that a search was performed (recorded only as a shape: which translation, and whether the words were written in a non-Latin script, never the words themselves).</li>
     <li>An approximate country, derived from IP address by the analytics provider, to know which languages matter. Full IP addresses are not stored in analytics events.</li>
   </ul>
   <p>What is never collected:</p>
   <ul>
     <li>Your name, email or account identifier.</li>
     <li>The content of your notes, highlights or bookmarks.</li>
-    <li>The specific verses you read or saved.</li>
+    <li>The specific verses you read or saved, and the words of any search.</li>
     <li>Advertising identifiers, contacts, photos, location or anything else on your device.</li>
   </ul>
   <p>Turning the toggle off stops all collection immediately and erases
   anything already queued on your device.</p>
 
+  <h2>Crash reports (optional)</h2>
+  <p>When the app breaks, it can send an anonymous crash report to Sentry
+  (Functional Software, Inc., cloud-hosted in the United States) so the fault
+  can be found and fixed. Crash reports are governed by the same "Share
+  anonymous usage statistics" toggle in Settings &rarr; Data &amp; storage.</p>
+  <p>A crash report carries the technical detail of a failure: its type and
+  stack trace, the app version, the device model and operating system
+  version, and the recent steps that led up to it. To keep your reading out
+  of it:</p>
+  <ul>
+    <li>The app's own page address is cut to the bare origin, because in this app the address itself can name a verse.</li>
+    <li>Console output is dropped entirely, since it can carry verse text, and network records keep only the verb and address of a call, never its query strings or contents.</li>
+    <li>No name, email, account identifier or advertising identifier is attached.</li>
+  </ul>
+  <p>Like statistics, crash reports stop the moment the toggle is turned
+  off.</p>
+
   <h2>Bible downloads</h2>
   <p>Downloaded translations stream from our storage host (Cloudflare R2).
   These downloads are anonymous file transfers and carry no information about
   you beyond what any HTTPS connection technically involves.</p>
-
-  <h2>Notifications</h2>
-  <p>If you enable it, the daily verse notification and home screen widget are
-  generated on your device from the bundled Bible text. They involve no
-  network connection and no data collection.</p>
 
   <h2>Children</h2>
   <p>Watchers Bible is a general-audience app and does not knowingly collect
@@ -139,9 +159,9 @@
   <h2>Your rights</h2>
   <p>You control your data:</p>
   <ul>
-    <li>Local data: stored on your device; uninstall or use Settings, Data &amp; storage to manage it.</li>
-    <li>Synced data: delete your account and all cloud data from Settings, Backup &amp; sync.</li>
-    <li>Statistics: turn off the toggle in Settings, Data &amp; storage; the identifier is random and cannot be traced back to you, so no other deletion is possible or needed.</li>
+    <li>Local data: stored on your device; uninstall or use Settings &rarr; Data &amp; storage to manage it.</li>
+    <li>Synced data: delete your account and all cloud data from Settings &rarr; Backup &amp; sync.</li>
+    <li>Statistics and crash reports: turn off the toggle in Settings &rarr; Data &amp; storage. The identifiers involved are random and cannot be traced back to you, so no other deletion is possible or needed.</li>
   </ul>
   <p>If you have a privacy question or request, contact us at
   <a href="mailto:jstone33.jacob@gmail.com">jstone33.jacob@gmail.com</a>.</p>
@@ -152,6 +172,8 @@
   app.</p>
 
   <div class="doc-footer">
+    <p class="quiet">This policy is also bundled inside the app (About &rarr;
+    Privacy policy), where it reads fully offline.</p>
     <p class="quiet">Watchers Bible &middot; Built with grace by Apostolic Intelligence</p>
   </div>
 </main>
