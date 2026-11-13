@@ -909,7 +909,7 @@ body::after {
 
 /* ════════════════════════════════════════════════════════════════════
    v4 · feature chapters — the home-screen widget, the 7:00 knock,
-   the concordance, and the typography proof. Same contract as v3:
+   the concordance. Same contract as v3:
    hidden states live only inside .js + prefers-reduced-motion:
    no-preference, so no-JS and reduced-motion visitors get the
    finished page.
@@ -1044,73 +1044,6 @@ body::after {
 .search-demo mark { background: rgba(38,40,34,0.16); color: inherit; border-radius: 3px; padding: 0 2px; }
 .sd-tail { padding: 12px 18px 16px; font-size: 13px; font-style: italic; text-align: center; color: var(--ink-mut); }
 
-/* ── chapter one: the typography proof ────────────────────────────── */
-.type-proof {
-  margin: 22px 0 0;
-  border: 1px solid var(--line); border-radius: 16px;
-  padding: 30px 30px 24px;
-}
-.tp-head { text-align: center; margin-bottom: 24px; }
-.tp-sub { font-size: 14px; color: var(--ink-mut); }
-.tp-body {
-  display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 26px;
-  align-items: stretch;
-}
-.tp-page {
-  background: var(--paper); background-image: var(--paper-fine), var(--paper-fiber);
-  border-radius: 14px;
-  box-shadow: inset 0 0 0 1px var(--line), 0 4px 14px rgba(22,23,20,0.08);
-  padding: 26px 24px; min-height: 250px;
-  display: flex; flex-direction: column; justify-content: center;
-}
-.tp-eyebrow {
-  font-size: 10.5px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ink-mut); margin-bottom: 12px;
-}
-.tp-verse {
-  font-family: var(--tp-font, var(--serif));
-  font-size: var(--tp-size, 17px);
-  line-height: 1.75;
-}
-.tp-num { font-size: 0.62em; font-weight: 600; vertical-align: 0.3em; color: var(--ink-mut); margin-right: 0.4em; }
-.tp-dropcap {
-  float: left;
-  font-family: var(--display); font-weight: 500;
-  font-size: 2.9em; line-height: 0.82;
-  padding: 0.05em 0.12em 0 0;
-  color: var(--ink);
-}
-.tp-controls { display: flex; flex-direction: column; gap: 20px; justify-content: center; }
-.tp-row { display: flex; flex-direction: column; gap: 9px; }
-.tp-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--ink-mut);
-}
-.tp-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.tp-chip {
-  font-family: inherit; font-size: 13.5px;
-  color: var(--ink); background: var(--sheet-2); background-image: var(--paper-fine);
-  border: 1px solid var(--line); border-radius: 999px;
-  padding: 8px 16px; min-height: 44px; cursor: pointer;
-  display: inline-flex; align-items: center;
-  box-shadow: 0 2px 5px rgba(22,23,20,0.12);
-  transition: background 0.22s, color 0.22s, border-color 0.22s;
-}
-.tp-chip:hover { border-color: var(--graph-2); }
-.tp-chip.is-on { background: var(--graphite); color: #eceee6; border-color: var(--graphite); }
-.tp-size { display: flex; align-items: center; gap: 12px; }
-.tp-step {
-  width: 44px; height: 44px; border-radius: 12px;
-  border: 1px solid var(--line); background: var(--sheet-2); background-image: var(--paper-fine);
-  color: var(--ink); font-size: 19px; cursor: pointer;
-  box-shadow: 0 2px 5px rgba(22,23,20,0.12);
-  transition: background 0.22s;
-}
-.tp-step:hover { background: var(--sheet); }
-.tp-step:disabled { opacity: 0.4; cursor: default; }
-.tp-readout { font-size: 14px; color: var(--ink-mut); min-width: 56px; text-align: center; font-variant-numeric: tabular-nums; }
-.tp-note { max-width: 62ch; margin: 22px auto 0; text-align: center; font-size: 13px; font-style: italic; color: var(--ink-mut); }
-
 /* marginalia for the new chapters */
 .m-bell { top: 140px; right: 4%;    width: 26px; }
 .m-lens { bottom: 180px; left: 3%;  width: 30px; }
@@ -1121,20 +1054,6 @@ body::after {
     opacity: 0; transform: translateY(16px);
     animation: load-rise 650ms var(--ease-out) 1030ms forwards;
   }
-
-  /* chapter one: the proof card rises, its chips cascade after */
-  .js .type-proof {
-    opacity: 0; transform: translateY(28px);
-    transition: opacity 750ms var(--ease-expo), transform 900ms var(--ease-expo);
-  }
-  .js .type-proof.in { opacity: 1; transform: none; }
-  .js .tp-chip, .js .tp-step {
-    opacity: 0; transform: translateY(10px);
-    transition: opacity 600ms var(--ease-expo), transform 700ms var(--ease-expo),
-                background 0.22s, color 0.22s, border-color 0.22s;
-    transition-delay: calc(260ms + var(--i, 0) * 60ms);
-  }
-  .js .type-proof.in .tp-chip, .js .type-proof.in .tp-step { opacity: 1; transform: none; }
 
   /* chapter four: panels slide from their sides, cards deal in, the
      knock drops into the shade from above */
@@ -1176,16 +1095,11 @@ body::after {
 /* ── v4 responsive ────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .widget-stage { grid-template-columns: 1fr; }
-  .tp-body { grid-template-columns: 1fr; }
-  .tp-page { min-height: 200px; }
 }
 @media (max-width: 640px) {
   .wg-panel { padding: 18px 14px 14px; }
   .widget-stage { gap: 14px; }
   .wg-apps { display: none; }
-  .type-proof { padding: 22px 16px 18px; }
-  .tp-body { gap: 18px; }
-  .tp-controls { gap: 16px; }
   .badge-soon { min-height: 50px; padding: 0 16px; font-size: 13px; }
 }
 

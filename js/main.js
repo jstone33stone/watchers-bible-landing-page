@@ -44,11 +44,11 @@
     ".compare", ".stat-row", ".adslot-stage", ".stamp",
     ".feature-grid", ".shelf-stage", ".spread",
     ".footnote",
-    ".type-proof", ".widget-stage", ".search-demo",
+    ".widget-stage", ".search-demo",
     ".chapter-label", ".lede:not([data-fill])"
   ];
   /* containers whose children are choreographed in CSS: they take .in, never .rv */
-  var CHOREO = ".compare, .adslot-stage, .feature-grid, .type-proof, .widget-stage, .search-demo";
+  var CHOREO = ".compare, .adslot-stage, .feature-grid, .widget-stage, .search-demo";
   var REVEAL_SELECTOR = ".ink-soak, .rv, .stat, .stamp, .shelf-stage, .spread, .cmp-paper, .h2-flourish, " + CHOREO + ", .chapter-label, .lede:not([data-fill])";
   var revealEls = document.querySelectorAll(toReveal.join(","));
   revealEls.forEach(function (el) {
@@ -237,50 +237,6 @@
     sd.addEventListener("click", function () { startSearch(sd); });
   }
 
-  /* ── 4c. the typography proof: six typefaces, size steps, drop cap ─ */
-  var tpPage = document.getElementById("tpPage");
-  var tpVerse = document.getElementById("tpVerse");
-  var tpSizeEl = document.getElementById("tpSize");
-  var tpDropBtn = document.getElementById("tpDrop");
-  var tpSize = 17;
-  var tpOriginal = tpVerse ? tpVerse.innerHTML : "";
-  document.querySelectorAll(".tp-chip[data-font]").forEach(function (chip) {
-    chip.addEventListener("click", function () {
-      document.querySelectorAll(".tp-chip[data-font]").forEach(function (c) {
-        c.classList.remove("is-on");
-      });
-      chip.classList.add("is-on");
-      if (tpPage) tpPage.style.fontFamily = chip.getAttribute("data-font");
-    });
-  });
-  document.querySelectorAll(".tp-step").forEach(function (step) {
-    step.addEventListener("click", function () {
-      tpSize = Math.min(30, Math.max(15, tpSize + parseInt(step.getAttribute("data-step"), 10)));
-      if (tpSizeEl) tpSizeEl.textContent = String(tpSize);
-      if (tpPage) tpPage.style.setProperty("--tp-size", tpSize + "px");
-      document.querySelectorAll(".tp-step").forEach(function (s) {
-        var v = parseInt(s.getAttribute("data-step"), 10);
-        s.disabled = (v < 0 && tpSize <= 15) || (v > 0 && tpSize >= 30);
-      });
-    });
-  });
-  if (tpDropBtn && tpVerse) {
-    tpDropBtn.addEventListener("click", function () {
-      var on = tpDropBtn.getAttribute("aria-pressed") !== "true";
-      tpDropBtn.setAttribute("aria-pressed", String(on));
-      tpDropBtn.classList.toggle("is-on", on);
-      if (on) {
-        /* wrap the verse's first letter like the app's chapter opening */
-        tpVerse.innerHTML = tpOriginal.replace(
-          /^(<span class="tp-num">105<\/span>)([A-Za-z])([\s\S]*)$/,
-          '$1<span class="tp-dropcap">$2</span>$3'
-        );
-      } else {
-        tpVerse.innerHTML = tpOriginal;
-      }
-    });
-  }
-
   /* ── 3d. the paper-comfort statement: split into words so the
      scroll can ink them in (skipped for reduced motion) ──────────── */
   var fillEl = document.querySelector(".lede[data-fill]");
@@ -425,7 +381,7 @@
   /* ── 8. ink blot easter egg ────────────────────────────────────── */
   if (!reduced) {
     document.addEventListener("click", function (e) {
-      if (e.target.closest("a, button, .phone, .mini-phone, .shots-strip, .shelf, .tchip, .feature, .compare, .topbar, .search-demo, .type-proof, .widget-stage")) return;
+      if (e.target.closest("a, button, .phone, .mini-phone, .shots-strip, .shelf, .tchip, .feature, .compare, .topbar, .search-demo, .widget-stage")) return;
       var b = document.createElement("span");
       b.className = "blot";
       b.style.left = e.clientX + "px";
