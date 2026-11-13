@@ -1422,11 +1422,12 @@ body::after {
 .gd-seal svg { width: 26px; height: 26px; }
 .gd-title { font-family: var(--display); font-size: 19px; font-weight: 500; margin-top: 12px; }
 .gd-text { font-size: 13.5px; color: var(--ink-mut); max-width: 40ch; margin: 8px auto 0; line-height: 1.6; }
+.gd-warn { font-weight: 600; color: #8c2f26; }
 
 /* hidden-attribute guards (these classes set display, which would
    otherwise override [hidden]) */
 .give-form[hidden], .give-done[hidden], .give-quiet-note[hidden], .give-choice[hidden],
-.gf-preview[hidden], .gf-error[hidden], .gf-sent[hidden], #gvFile[hidden] { display: none; }
+.gf-preview[hidden], .gf-error[hidden], .gf-sent[hidden], .gd-warn[hidden], #gvFile[hidden] { display: none; }
 
 @media (max-width: 520px) {
   .give-stage { padding: 24px 16px 20px; }

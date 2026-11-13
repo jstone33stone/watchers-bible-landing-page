@@ -38,6 +38,7 @@
   var contactIn = document.getElementById("gvContact");
   var errorOut = document.getElementById("gvError");
   var submitBtn = document.getElementById("gvSubmit");
+  var doneWarn = document.getElementById("giveDoneWarn");
 
   var state = { show: false, currency: "PHP", receipt: null, busy: false };
   var thumbUrl = null;
@@ -257,7 +258,11 @@
           });
         }).then(function (res) {
           if (res.status === 200 && res.json && res.json.ok) {
-            thank();
+            /* proofMissing: the record was created but carries no proof the
+               developer can check (a receipt-only giver whose screenshot
+               failed to attach) — the thank-you says so instead of letting
+               the giver believe the queue is complete. */
+            thank(res.json.proofMissing === true);
           } else {
             fail((res.json && res.json.error) || "Could not submit right now. Please try again.");
           }
@@ -279,11 +284,12 @@
     }
   });
 
-  function thank() {
+  function thank(proofMissing) {
     choiceRow.hidden = true;
     quietNote.hidden = true;
     form.hidden = true;
     done.hidden = false;
+    if (doneWarn) doneWarn.hidden = !proofMissing;
     clearReceipt();
     done.scrollIntoView({ block: "center" });
   }
