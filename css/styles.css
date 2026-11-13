@@ -1257,6 +1257,9 @@ body::after {
    ════════════════════════════════════════════════════════════════════ */
 
 #give { scroll-margin-top: 76px; }
+/* the deep link from the app's Give button lands on the codes themselves,
+   not the chapter heading, so the stage carries its own scroll margin */
+.give-stage { scroll-margin-top: 76px; }
 .m-lamp { bottom: 210px; right: 3.5%; width: 32px; }
 
 .give-stage {

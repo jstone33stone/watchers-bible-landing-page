@@ -60,8 +60,17 @@
   var params = new URLSearchParams(window.location.search);
   if (params.get("give") === "1" || window.location.hash === "#give" || window.location.hash === "#giveList") {
     revealGive();
+    /* The chapter heading ("Freely received. Freely given.") is context;
+       the codes are the destination. ?give=1 and #give land on the stage
+       itself — the visitor reads the eyebrow, then the codes, without a
+       scroll of their own. #giveList keeps pointing at the list. */
+    var stage = section.querySelector(".give-stage");
+    var target = window.location.hash === "#giveList"
+      ? document.getElementById("giveList")
+      : stage;
     window.setTimeout(function () {
-      section.scrollIntoView({ block: "start" });
+      if (target) target.scrollIntoView({ block: "start" });
+      else section.scrollIntoView({ block: "start" });
     }, 80);
   }
 
