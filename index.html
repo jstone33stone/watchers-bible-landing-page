@@ -588,6 +588,126 @@
     </div>
   </section>
 
+  <!-- ═══════════ CHAPTER TEN · THE GIVING ═══════════ -->
+  <section class="chapter" id="give">
+    <span class="marginalia m-lamp sway" aria-hidden="true"><svg viewBox="0 0 34 26"><g fill="none" stroke="#4b4e47" stroke-width="1.3" filter="url(#ink-wobble)"><path d="M6,18 C6,14 10,12 17,12 C24,12 28,14 28,18 C28,21 24,23 17,23 C10,23 6,21 6,18 Z"/><path d="M28,16 C31,15 32,13 31,11"/><path d="M11,12 C11,9 13,8 13,6"/><path d="M13,6 C15,5 15.4,3.4 14.4,1.8 C16.6,3.4 17,5.4 15.4,7.2"/></g></svg></span>
+    <div class="wrap wrap-center">
+      <p class="chapter-label">Chapter Ten</p>
+      <h2 class="ink-soak">Freely received. Freely given.</h2>
+      <p class="lede">Watchers Bible has nothing to sell: no ads, no subscriptions, nothing locked behind a paywall. The work runs on gifts alone. A gift here is not a purchase &mdash; it is the oil that keeps the lamp lit: servers answering every download day and night, audio books waiting on their shelf, new translations joining the gallery. It keeps the app free for life, and keeps this ministry moving forward.</p>
+
+      <div class="give-stage card-sheet">
+        <div class="give-head">
+          <p class="give-eyebrow">The offering</p>
+          <p class="give-note">Scan either code with any InstaPay app and send any amount. That is all a quiet gift takes.</p>
+        </div>
+        <div class="give-qr-grid">
+          <figure class="give-qr">
+            <figcaption>MariBank</figcaption>
+            <a href="support/qr-maribank.jpg" download="watchers-bible-maribank-qr.jpg" title="Open the code to save it">
+              <img src="support/qr-maribank.jpg" alt="MariBank QR code for giving" width="771" height="767" loading="lazy">
+            </a>
+            <span class="give-qr-hint">tap the code to save it</span>
+          </figure>
+          <figure class="give-qr">
+            <figcaption>GoTyme</figcaption>
+            <a href="support/qr-gotyme.jpg" download="watchers-bible-gotyme-qr.jpg" title="Open the code to save it">
+              <img src="support/qr-gotyme.jpg" alt="GoTyme QR code for giving" width="815" height="805" loading="lazy">
+            </a>
+            <span class="give-qr-hint">tap the code to save it</span>
+          </figure>
+        </div>
+        <p class="give-insta">These InstaPay (QR&nbsp;Ph) codes work with GCash, Maya, GrabPay, ShopeePay, Coins.ph and any InstaPay member bank app &mdash; BDO, BPI, Metrobank, UnionBank and more. Your banking app may charge a small transfer fee.</p>
+      </div>
+
+      <div class="give-list card-sheet" id="giveList">
+        <p class="give-list-title">After the gift</p>
+        <p class="give-list-sub">Keep it quiet, or put your name on the supporter wall inside the app. The choice is yours.</p>
+        <div class="give-choice" role="group" aria-label="Keep the gift quiet or show your name">
+          <button class="give-tile is-on" id="tileQuiet" type="button" aria-pressed="true">
+            <svg class="gt-glyph" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3,4 L21,18"/><path d="M9.5,5.8 C10.9,5.3 12.4,5 14,5 C18.7,5 22,9 22,12 C22,13 21.7,14.1 21.2,15.1"/><path d="M6.3,7.6 C4.3,9 2,10.9 2,12 C2,13 5.3,17 10,17 C11.1,17 12.1,16.8 13,16.5"/><circle cx="10" cy="11" r="2.4"/></g></svg>
+            <svg class="gt-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5,12.5 L10,17.5 L19,7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="gt-title">Give quietly</span>
+            <span class="gt-sub">Just scan and send. Nothing to fill in.</span>
+          </button>
+          <button class="give-tile" id="tileShow" type="button" aria-pressed="false">
+            <svg class="gt-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6 C13 8.6 17.4 13 23.4 14 C17.4 15 13 19.4 12 25.4 C11 19.4 6.6 15 0.6 14 C6.6 13 11 8.6 12 2.6 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" transform="translate(0,-2)"/></svg>
+            <svg class="gt-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5,12.5 L10,17.5 L19,7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="gt-title">Show my name</span>
+            <span class="gt-sub">Join the supporter wall inside the app once approved.</span>
+          </button>
+        </div>
+
+        <p class="give-quiet-note" id="giveQuietNote">A quiet gift needs nothing else. It will be seen, checked by hand, and quietly held. Thank you for keeping the lamp lit.</p>
+
+        <form class="give-form" id="giveForm" hidden novalidate>
+          <!-- Real honeypot: bots fill every input they can see; the server
+              drops any submission where this is non-empty. -->
+          <input type="text" name="website" class="gv-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="gf-title">Your listing request</p>
+          <p class="gf-sub">Three details and a proof of the gift. Checked by hand before your name shows.</p>
+
+          <label class="gf-label" for="gvName">Name to list</label>
+          <input class="gf-input" id="gvName" type="text" maxlength="60" autocomplete="off" placeholder="Your name, or your church or organization">
+
+          <label class="gf-label" for="gvAmount">Amount sent</label>
+          <div class="gf-amount">
+            <input class="gf-input" id="gvAmount" type="number" inputmode="decimal" min="1" step="any" placeholder="0.00">
+            <div class="gf-cur" role="group" aria-label="Currency">
+              <button type="button" class="is-on" data-cur="PHP" aria-pressed="true">PHP</button>
+              <button type="button" data-cur="USD" aria-pressed="false">USD</button>
+            </div>
+          </div>
+          <p class="gf-sent" id="gvSent" hidden></p>
+
+          <p class="gf-proof-hint">Add the receipt screenshot or the reference number from your payment app, so the gift can be checked.</p>
+
+          <label class="gf-label" for="gvRef">Transaction reference number</label>
+          <input class="gf-input" id="gvRef" type="text" maxlength="60" autocomplete="off" placeholder="e.g. 0123 456 789 from the app&rsquo;s receipt">
+
+          <label class="gf-label" for="gvFile">Receipt screenshot <em>(or the reference above, whichever you have)</em></label>
+          <input type="file" id="gvFile" accept="image/*" hidden>
+          <button type="button" class="gf-attach" id="gvAttach">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21,15 L16.5,10.5 L6,21"/></g></svg>
+            Attach receipt screenshot
+          </button>
+          <div class="gf-preview" id="gvPreview" hidden>
+            <img id="gvThumb" alt="Receipt preview">
+            <p class="gf-preview-text">Receipt attached<span id="gvMeta"></span></p>
+            <button type="button" class="gf-remove" id="gvRemove">Remove</button>
+          </div>
+
+          <label class="gf-label" for="gvNote">A note (optional)</label>
+          <textarea class="gf-area" id="gvNote" rows="3" maxlength="500" placeholder="A word of encouragement, if you like"></textarea>
+
+          <label class="gf-label" for="gvContact">Contact (optional)</label>
+          <input class="gf-input" id="gvContact" type="text" maxlength="120" autocomplete="off" placeholder="Email or phone, if you would like a reply">
+
+          <p class="gf-error" id="gvError" role="alert" hidden></p>
+          <p class="gf-fine">Every gift is checked by hand. After it is approved, your name joins the supporter list inside the app within 24 hours. A receipt screenshot or reference number is required so the gift can be checked, and receipt images are deleted after checking. The note and contact details stay in the developer&rsquo;s private ledger and are never displayed.</p>
+          <button type="submit" class="gf-submit" id="gvSubmit" disabled>Submit for the supporter list</button>
+        </form>
+
+        <div class="give-done" id="giveDone" hidden>
+          <span class="gd-seal" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5,12.5 L10,17.5 L19,7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <p class="gd-title">Thank you!</p>
+          <p class="gd-text">Your gift was received. Gifts are checked by hand, and your name joins the supporter list within 24 hours.</p>
+          <p class="gd-text">The supporter wall lives inside the app &mdash; <a class="ink-link" href="#download">carry Watchers Bible with you</a>.</p>
+        </div>
+      </div>
+
+      <div class="stat-row" role="list">
+        <span class="stat" role="listitem">0 ads, ever</span>
+        <span class="stat" role="listitem">Free forever</span>
+        <span class="stat" role="listitem">Checked by hand</span>
+        <span class="stat" role="listitem">Receipts deleted after review</span>
+      </div>
+      <p class="footnote">The supporter wall of listed givers lives inside the app &mdash; this page is the only place a gift is ever asked for.</p>
+    </div>
+  </section>
+
   <footer class="footer">
     <div class="wrap wrap-center footer-inner">
       <div class="wax-seal" aria-hidden="true">
@@ -619,5 +739,6 @@
 </main>
 
 <script src="js/main.js" defer></script>
+<script src="js/giving.js" defer></script>
 </body>
 </html>

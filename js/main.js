@@ -173,7 +173,7 @@
 
   /* ── 3b. quill flourish under every chapter heading + ghost numerals ── */
   var SVG_NS = "http://www.w3.org/2000/svg";
-  var ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+  var ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
   document.querySelectorAll(".chapter").forEach(function (ch, i) {
     var h2 = ch.querySelector("h2");
     if (h2) {
