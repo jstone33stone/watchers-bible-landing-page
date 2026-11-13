@@ -165,8 +165,6 @@ html.skip-cover .cover { display: none; }
 }
 .btn-ink:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(22,23,20,0.32), inset 0 1px 0 rgba(255,255,255,0.09); }
 .btn-small { padding: 9px 18px; font-size: 14px; }
-.btn-apk { padding: 14px 28px; }
-.btn-glyph { width: 19px; height: 19px; }
 
 /* ink underline that draws itself */
 .ink-link {
@@ -547,24 +545,6 @@ html.skip-cover .cover { display: none; }
   box-shadow: 0 8px 18px rgba(22,23,20,0.28), inset 0 1px 0 rgba(255,255,255,0.4);
 }
 
-/* ── chapter five: teasers ────────────────────────────────────────── */
-.teaser-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 860px; margin: 0 auto; }
-.teaser {
-  border: 1px solid var(--line); border-radius: 16px;
-  padding: 30px 28px 26px; text-align: center;
-}
-.teaser-art { width: 150px; margin: 0 auto 18px; }
-.teaser-head { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 10px; }
-.teaser h3 { font-family: var(--display); font-weight: 500; font-size: 21px; }
-.coming {
-  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700;
-  color: var(--ink); background: var(--sheet-2);
-  padding: 4px 10px; border-radius: 3px;
-  box-shadow: inset 0 1px 3px rgba(22,23,20,0.25), inset 0 -1px 0 rgba(255,255,255,0.5);
-  transform: rotate(-2deg);
-}
-.teaser p { font-size: 14.5px; color: var(--ink-mut); }
-
 /* ── chapter six: pop-up spread ───────────────────────────────────── */
 .spread {
   position: relative; max-width: 620px; margin: 0 auto;
@@ -627,15 +607,6 @@ html.skip-cover .cover { display: none; }
 .mini-phone[data-t="vigil"] { background: #0a0d18; }
 .mini-phone[data-t="paper"] { background: #dbdcd6; }
 .spread-note { text-align: center; margin-top: 26px; font-size: 13.5px; font-style: italic; color: var(--ink-mut); }
-
-/* ── chapter seven: download ──────────────────────────────────────── */
-.badge-row-center { justify-content: center; margin-bottom: 26px; }
-.platform-chips { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-.platform-chips span {
-  font-size: 11.5px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
-  color: var(--ink-mut); border: 1px solid var(--line); border-radius: 999px;
-  padding: 8px 18px;
-}
 
 /* ── footer ───────────────────────────────────────────────────────── */
 .footer { padding: 84px 0 56px; position: relative; }
@@ -716,7 +687,6 @@ html.skip-cover .cover { display: none; }
   .compare { grid-template-columns: 1fr; }
   .cmp-lcd { border-right: 0; border-bottom: 1px solid var(--line); }
   .feature-grid { grid-template-columns: 1fr; }
-  .teaser-grid { grid-template-columns: 1fr; }
   .hero { padding-top: 104px; }
   .phone { width: 246px; }
   .ribbon { right: 7px; width: 6px; }
@@ -804,7 +774,6 @@ body::after {
 .m-glasses { bottom: 160px; left: 3%;  width: 44px; }
 .m-vine    { top: 420px; right: 3.5%;  width: 30px; }
 .m-bird    { top: 210px; right: 4%;    width: 36px; }
-.m-cross   { top: 120px; left: 3.5%;   width: 24px; }
 .sway { animation: marginalia-sway 9s ease-in-out infinite alternate; transform-origin: top center; }
 @keyframes marginalia-sway {
   from { transform: rotate(-2.2deg) translateY(0); }
@@ -924,13 +893,6 @@ body::after {
   }
   .js .feature-grid.in .feature { opacity: 1; transform: none; }
 
-  /* ── chapter five: teasers slide from their sides ──────────────── */
-  .js .teaser { opacity: 0; transition: opacity 850ms var(--ease-expo), transform 950ms var(--ease-expo); }
-  .js .teaser:nth-child(1) { transform: translateX(-46px); }
-  .js .teaser:nth-child(2) { transform: translateX(46px); }
-  .js .teaser-grid.in .teaser { opacity: 1; transform: none; }
-  .js .teaser-grid.in .teaser:nth-child(2) { transition-delay: 120ms; }
-
   /* ── chapter six: the chips cascade once the pop-up stands ─────── */
   .js .spread:not(.open) .tchip { opacity: 0; }
   .js .spread.open .tchip {
@@ -938,15 +900,6 @@ body::after {
     animation: chip-in 550ms var(--ease-out) forwards;
     animation-delay: calc(980ms + var(--i, 0) * 70ms);
   }
-
-  /* ── chapter seven: the three ways in rise one after another ───── */
-  .js .badge-row-center > *, .js .platform-chips > * {
-    opacity: 0; transform: translateY(22px);
-    transition: opacity 700ms var(--ease-expo), transform 850ms var(--ease-expo);
-    transition-delay: calc(var(--i, 0) * 90ms);
-  }
-  .js .badge-row-center.in > *, .js .platform-chips.in > * { opacity: 1; transform: none; }
-  .js .platform-chips > * { transition-delay: calc(200ms + var(--i, 0) * 80ms); }
 }
 
 @keyframes word-rise { to { transform: none; } }
@@ -972,16 +925,6 @@ body::after {
   background-image: var(--paper-fine);
 }
 .badge-soon svg { width: 19px; height: 19px; stroke: var(--ink-mut); }
-.badge-wait { position: relative; pointer-events: none; overflow: visible; }
-.badge-wait-tag {
-  position: absolute; top: -11px; right: -9px;
-  background: var(--paper); background-image: var(--paper-fine);
-  border: 1px solid var(--line); border-radius: 3px;
-  color: var(--ink); font-size: 9.5px; font-style: italic; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  padding: 3px 9px; transform: rotate(3deg);
-  box-shadow: var(--shadow-card);
-}
 
 /* ── chapter four: widget home screen + notification ──────────────── */
 .widget-stage {
@@ -1108,8 +1051,7 @@ body::after {
   padding: 30px 30px 24px;
 }
 .tp-head { text-align: center; margin-bottom: 24px; }
-.tp-title { font-family: var(--display); font-size: 22px; font-weight: 500; }
-.tp-sub { font-size: 14px; color: var(--ink-mut); margin-top: 4px; }
+.tp-sub { font-size: 14px; color: var(--ink-mut); }
 .tp-body {
   display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 26px;
   align-items: stretch;
@@ -1248,7 +1190,7 @@ body::after {
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   CHAPTER TEN · THE GIVING
+   CHAPTER EIGHT · THE GIVING
    The offering: two InstaPay codes on white cards (QRs scan from white,
    never from paper gray), and the listing request styled like a ledger
    form. The quiet/listed choice wears the ink stamp — the same wax-seal

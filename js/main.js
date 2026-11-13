@@ -42,13 +42,13 @@
   /* ── 3. reveal-on-enter, choreographed per section ─────────────── */
   var toReveal = [
     ".compare", ".stat-row", ".adslot-stage", ".stamp",
-    ".feature-grid", ".teaser-grid", ".shelf-stage", ".spread",
-    ".badge-row-center", ".platform-chips", ".footnote",
+    ".feature-grid", ".shelf-stage", ".spread",
+    ".footnote",
     ".type-proof", ".widget-stage", ".search-demo",
     ".chapter-label", ".lede:not([data-fill])"
   ];
   /* containers whose children are choreographed in CSS: they take .in, never .rv */
-  var CHOREO = ".compare, .adslot-stage, .feature-grid, .teaser-grid, .badge-row-center, .platform-chips, .type-proof, .widget-stage, .search-demo";
+  var CHOREO = ".compare, .adslot-stage, .feature-grid, .type-proof, .widget-stage, .search-demo";
   var REVEAL_SELECTOR = ".ink-soak, .rv, .stat, .stamp, .shelf-stage, .spread, .cmp-paper, .h2-flourish, " + CHOREO + ", .chapter-label, .lede:not([data-fill])";
   var revealEls = document.querySelectorAll(toReveal.join(","));
   revealEls.forEach(function (el) {
@@ -205,9 +205,6 @@
   /* ── 3c. stagger indices for choreographed children ────────────── */
   document.querySelectorAll(".feature-grid").forEach(function (g) {
     g.querySelectorAll(".feature").forEach(function (f, i) { f.style.setProperty("--i", i); });
-  });
-  document.querySelectorAll(".badge-row-center, .platform-chips").forEach(function (row) {
-    Array.prototype.forEach.call(row.children, function (c, i) { c.style.setProperty("--i", i); });
   });
   document.querySelectorAll(".theme-chips").forEach(function (row) {
     row.querySelectorAll(".tchip").forEach(function (c, i) { c.style.setProperty("--i", i); });
@@ -428,7 +425,7 @@
   /* ── 8. ink blot easter egg ────────────────────────────────────── */
   if (!reduced) {
     document.addEventListener("click", function (e) {
-      if (e.target.closest("a, button, .phone, .mini-phone, .shots-strip, .shelf, .tchip, .feature, .teaser, .compare, .topbar, .search-demo, .type-proof, .widget-stage")) return;
+      if (e.target.closest("a, button, .phone, .mini-phone, .shots-strip, .shelf, .tchip, .feature, .compare, .topbar, .search-demo, .type-proof, .widget-stage")) return;
       var b = document.createElement("span");
       b.className = "blot";
       b.style.left = e.clientX + "px";

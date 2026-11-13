@@ -1,4 +1,4 @@
-/* Watchers Bible landing · the giving chapter (Chapter Ten)
+/* Watchers Bible landing · the giving chapter (Chapter Eight)
    The listing request posts to the app's own backend
    (watchersbible.vercel.app/api/donations) — the exact endpoint the app's
    give sheet uses, same fields, same proof pair (receipt screenshot OR
