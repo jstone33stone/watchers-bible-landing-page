@@ -20,10 +20,30 @@ npx serve .
 
 ```
 index.html        # all markup + inline SVG art
+privacy.html      # privacy policy (served at /privacy by pretty URLs)
+404.html          # LOAD-BEARING on Cloudflare Pages: without it, Pages
+                  # auto-SPA-fallbacks every unknown path to index.html (200)
 css/styles.css    # paper tokens, art, motion
 js/main.js        # motion director (observer + rAF + fallback sweeps)
 assets/           # logo mark + device screenshots (web + full-res)
+support/          # giving QR codes
 ```
+
+## Deploy
+
+Production: **Cloudflare Pages**, project `watchersbible` → https://watchersbible.pages.dev
+
+Pages has no `.assetsignore`, so deploy a clean staging folder, never the repo root
+(`.env.local`, `.git`, `.vercel`, `.taste-skill` must not go public):
+
+```sh
+rm -rf "$TEMP/wb-pages" && mkdir -p "$TEMP/wb-pages"
+cp index.html privacy.html favicon.ico 404.html "$TEMP/wb-pages/"
+cp -r css js assets support "$TEMP/wb-pages/"
+npx wrangler pages deploy "$TEMP/wb-pages" --project-name watchersbible --branch main
+```
+
+The Vercel mirror was **removed** (2026-11-14) — this repo no longer auto-deploys anywhere on push; Cloudflare Pages is the only host. No `_redirects` file: pretty URLs are native on Pages, and 200-rewrites for `.html` caused a 307 self-loop on the old Workers setup.
 
 ## Placeholders to swap
 
