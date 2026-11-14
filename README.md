@@ -21,6 +21,8 @@ npx serve .
 ```
 index.html        # all markup + inline SVG art
 privacy.html      # privacy policy (served at /privacy by pretty URLs)
+delete-account.html  # account deletion page, Play data-safety's required
+                     # URL (served at /delete-account by pretty URLs)
 404.html          # LOAD-BEARING on Cloudflare Pages: without it, Pages
                   # auto-SPA-fallbacks every unknown path to index.html (200)
 _headers          # security headers (CSP, X-Frame-Options, HSTS,
@@ -44,7 +46,7 @@ Pages has no `.assetsignore`, so deploy a clean staging folder, never the repo r
 
 ```sh
 rm -rf "$TEMP/wb-pages" && mkdir -p "$TEMP/wb-pages"
-cp index.html privacy.html favicon.ico 404.html _headers "$TEMP/wb-pages/"
+cp index.html privacy.html delete-account.html favicon.ico 404.html _headers "$TEMP/wb-pages/"
 cp -r css js assets support "$TEMP/wb-pages/"
 npx wrangler pages deploy "$TEMP/wb-pages" --project-name watchersbible --branch main
 ```

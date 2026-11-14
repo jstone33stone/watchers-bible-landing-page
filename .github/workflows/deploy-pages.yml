@@ -34,7 +34,7 @@ jobs:
         run: |
           rm -rf staging
           mkdir -p staging
-          cp index.html privacy.html favicon.ico 404.html _headers staging/
+          cp index.html privacy.html delete-account.html favicon.ico 404.html _headers staging/
           cp -r css js assets support staging/
 
       - name: Deploy to Cloudflare Pages
