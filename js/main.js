@@ -55,23 +55,33 @@
     if (el.matches(CHOREO)) return;
     if (!el.classList.contains("rv") && !el.classList.contains("stat") &&
         !el.classList.contains("stamp") && !el.classList.contains("shelf-stage") &&
-        !el.classList.contains("spread") && !el.classList.contains("stamp")) {
+        !el.classList.contains("spread")) {
       el.classList.add("rv");
     }
   });
 
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (en) {
-      if (!en.isIntersecting) return;
-      var el = en.target;
-      el.classList.add("in");
-      if (el.classList.contains("spread")) el.classList.add("open"); /* pop-up book */
-      if (el.classList.contains("search-demo")) startSearch(el); /* concordance retype */
-      io.unobserve(el);
-    });
-  }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+  /* without IntersectionObserver, everything reveals now: hidden states
+     would otherwise hold the page hostage forever */
+  var io = null;
+  if ("IntersectionObserver" in window) {
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        el.classList.add("in");
+        if (el.classList.contains("spread")) el.classList.add("open"); /* pop-up book */
+        if (el.classList.contains("search-demo")) startSearch(el); /* concordance retype */
+        io.unobserve(el);
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
 
-  document.querySelectorAll(REVEAL_SELECTOR).forEach(function (el) { io.observe(el); });
+    document.querySelectorAll(REVEAL_SELECTOR).forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(REVEAL_SELECTOR).forEach(function (el) {
+      el.classList.add("in");
+      if (el.classList.contains("spread")) el.classList.add("open");
+    });
+  }
 
   /* safety sweep: on machines where IntersectionObserver delivery is
      slow (backgrounded panes, low-power modes), reveal anything in
@@ -127,9 +137,9 @@
   var heroCaption = document.getElementById("heroCaption");
   var HERO_CAPTIONS = [
     "Home · the verse of the day",
-    "Bible · 2 Corinthians 7, in your ink",
+    "Bible · John 8, in your ink",
     "Library · highlights and notes",
-    "Search · 341 matches for \u201Clove\u201D",
+    "Search · 291 matches for \u201Cfaith\u201D",
     "Settings · the Paper theme"
   ];
   var heroIdx = 0, heroTimer = null;
@@ -190,7 +200,7 @@
       p.setAttribute("stroke-linecap", "round");
       svg.appendChild(p);
       h2.insertAdjacentElement("afterend", svg);
-      if (typeof io !== "undefined") io.observe(svg);
+      if (io) io.observe(svg);
     }
     var num = document.createElement("span");
     num.className = "ghost-numeral";
@@ -320,7 +330,7 @@
     }
     if (!reduced) {
       var vh = window.innerHeight;
-      /* batched reads first, then writes — no layout thrash */
+      /* batched reads first, then writes · no layout thrash */
       var rects = [];
       for (var ci = 0; ci < chaps.length; ci++) rects.push(chaps[ci].getBoundingClientRect());
       var fillRect = fillWords.length ? fillEl.getBoundingClientRect() : null;
@@ -381,7 +391,7 @@
   /* ── 8. ink blot easter egg ────────────────────────────────────── */
   if (!reduced) {
     document.addEventListener("click", function (e) {
-      if (e.target.closest("a, button, .phone, .mini-phone, .shots-strip, .shelf, .tchip, .feature, .compare, .topbar, .search-demo, .widget-stage")) return;
+      if (e.target.closest("a, button, .phone, .mini-phone, .shots-strip, .shelf, .tchip, .feature, .compare, .topbar, .search-demo, .widget-stage, .give-stage, .give-list, .give-wall")) return;
       var b = document.createElement("span");
       b.className = "blot";
       b.style.left = e.clientX + "px";
@@ -389,6 +399,68 @@
       b.setAttribute("aria-hidden", "true");
       document.body.appendChild(b);
       setTimeout(function () { b.remove(); }, 750);
+    });
+  }
+
+  /* ── 9. the get-app chooser: the top bar button opens a leaflet with
+     the four ways in; the two stores, still far off, turn a margin note
+     instead of leaving the page. Without JS the button keeps its old
+     truth and lands on the APK itself. ───────────────────────────── */
+  var appWrap = document.querySelector(".get-app");
+  var appBtn = document.getElementById("getAppBtn");
+  var appMenu = document.getElementById("appMenu");
+  var appNote = document.getElementById("amNote");
+  var noteTimer = null;
+  if (appWrap && appBtn && appMenu) {
+    var appMenuOpen = function () { return appMenu.classList.contains("open"); };
+    var openAppMenu = function () {
+      appMenu.classList.add("open");
+      appBtn.setAttribute("aria-expanded", "true");
+      if (appNote) { appNote.classList.remove("show"); appNote.textContent = ""; }
+      /* reopening restarts CSS animations, so a leftover shake would wiggle again */
+      appMenu.querySelectorAll(".am-row.shake").forEach(function (r) { r.classList.remove("shake"); });
+      if (noteTimer) { clearTimeout(noteTimer); noteTimer = null; }
+      var first = appMenu.querySelector(".am-row");
+      if (first) first.focus();
+    };
+    var closeAppMenu = function (refocus) {
+      if (!appMenuOpen()) return;
+      appMenu.classList.remove("open");
+      appBtn.setAttribute("aria-expanded", "false");
+      if (noteTimer) { clearTimeout(noteTimer); noteTimer = null; }
+      if (refocus) appBtn.focus();
+    };
+
+    appBtn.addEventListener("click", function (e) {
+      e.preventDefault(); /* the leaflet opens in place; the plain link stays for no-JS hands */
+      if (appMenuOpen()) closeAppMenu(true); else openAppMenu();
+    });
+    document.addEventListener("click", function (e) {
+      if (appMenuOpen() && !appWrap.contains(e.target)) closeAppMenu(false);
+    });
+    document.addEventListener("focusin", function (e) {
+      if (appMenuOpen() && !appWrap.contains(e.target)) closeAppMenu(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && appMenuOpen()) closeAppMenu(true);
+    });
+
+    appMenu.querySelectorAll(".am-row").forEach(function (row) {
+      row.addEventListener("click", function () {
+        if (!row.classList.contains("am-soon")) { closeAppMenu(false); return; }
+        /* the store is not real yet: turn the margin note instead */
+        if (appNote) {
+          appNote.textContent = row.getAttribute("data-note") || "Coming soon.";
+          appNote.classList.add("show");
+          if (noteTimer) clearTimeout(noteTimer);
+          noteTimer = setTimeout(function () { appNote.classList.remove("show"); }, 7000);
+        }
+        if (!reduced) {
+          row.classList.remove("shake");
+          void row.offsetWidth; /* restart the shake */
+          row.classList.add("shake");
+        }
+      });
     });
   }
 })();

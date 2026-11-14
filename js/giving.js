@@ -1,6 +1,6 @@
 /* Watchers Bible landing · the giving chapter (Chapter Eight)
    The listing request posts to the app's own backend
-   (watchersbible.vercel.app/api/donations) — the exact endpoint the app's
+   (watchersbible.vercel.app/api/donations) · the exact endpoint the app's
    give sheet uses, same fields, same proof pair (receipt screenshot OR
    transaction reference), same honeypot. The server independently
    re-validates everything and rate-limits per IP; nothing publishes
@@ -45,7 +45,7 @@
 
   /* ── deep link: the app's Give button lands on ?give=1#give ──────────
      Anchor jumps are already smooth (CSS scroll-behavior) and the reveal
-     sweeps in main.js catch sections in view — but a deep-linked visitor
+     sweeps in main.js catch sections in view · but a deep-linked visitor
      should see the offering settled and greeted, not mid-animation, so
      the section reveals immediately and the QR cards pulse once. */
   function revealGive() {
@@ -58,12 +58,16 @@
     void section.offsetWidth; /* restart the one-shot on repeat visits */
     section.classList.add("give-arrive");
   }
-  var params = new URLSearchParams(window.location.search);
-  if (params.get("give") === "1" || window.location.hash === "#give" || window.location.hash === "#giveList") {
+  var wantsGive = window.location.hash === "#give" || window.location.hash === "#giveList";
+  if (window.URLSearchParams) {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("give") === "1") wantsGive = true;
+  }
+  if (wantsGive) {
     revealGive();
     /* The chapter heading ("Freely received. Freely given.") is context;
        the codes are the destination. ?give=1 and #give land on the stage
-       itself — the visitor reads the eyebrow, then the codes, without a
+       itself · the visitor reads the eyebrow, then the codes, without a
        scroll of their own. #giveList keeps pointing at the list. */
     var stage = section.querySelector(".give-stage");
     var target = window.location.hash === "#giveList"
@@ -112,7 +116,7 @@
     });
   });
 
-  /* ₱5,000 / $120.50 — whole units stay whole, cents only when they exist */
+  /* ₱5,000 / $120.50 · whole units stay whole, cents only when they exist */
   function fmtAmount(v) {
     var digits = Number.isInteger(v) ? 0 : 2;
     try {
@@ -260,7 +264,7 @@
           if (res.status === 200 && res.json && res.json.ok) {
             /* proofMissing: the record was created but carries no proof the
                developer can check (a receipt-only giver whose screenshot
-               failed to attach) — the thank-you says so instead of letting
+               failed to attach) · the thank-you says so instead of letting
                the giver believe the queue is complete. */
             thank(res.json.proofMissing === true);
           } else {

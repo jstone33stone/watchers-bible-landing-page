@@ -4,20 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Watchers Bible · The Bible app that reads like paper</title>
-<meta name="description" content="The Bible app that reads like paper: as comfortable as a real book, easy on the eyes. Free, offline and completely ad-free for Android.">
+<meta name="description" content="The Bible app that reads like paper: as comfortable as a real book, easy on the eyes. Free, offline and completely ad-free for Android, with iOS coming soon.">
 <meta name="theme-color" content="#dbdcd6">
 <meta property="og:title" content="Watchers Bible · Be still, and read.">
-<meta property="og:description" content="The Bible app that reads like paper: as comfortable as a real book, easy on the eyes. Free, offline and completely ad-free, with a verse-of-the-day home-screen widget.">
+<meta property="og:description" content="The Bible app that reads like paper: as comfortable as a real book, easy on the eyes. Free, offline and completely ad-free for Android, with iOS coming soon.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://watchersbible.pages.dev/">
+<meta property="og:site_name" content="Watchers Bible">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://watchersbible.pages.dev/assets/og-image.jpg">
-<link rel="canonical" href="https://watchersbible.pages.dev/">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Watchers Bible · Be still, and read. Free, offline and ad-free for Android; iOS coming soon.">
+<link rel="canonical" href="https://watchersbible.pages.dev/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Watchers Bible · Be still, and read.">
-<meta name="twitter:description" content="The Bible app that reads like paper: as comfortable as a real book, easy on the eyes. Free, offline and completely ad-free, with a verse-of-the-day home-screen widget.">
+<meta name="twitter:description" content="The Bible app that reads like paper: as comfortable as a real book, easy on the eyes. Free, offline and completely ad-free for Android, with iOS coming soon.">
 <meta name="twitter:image" content="https://watchersbible.pages.dev/assets/og-image.jpg">
+<meta name="twitter:image:alt" content="Watchers Bible · Be still, and read. Free, offline and ad-free for Android; iOS coming soon.">
 <link rel="icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
@@ -87,7 +92,37 @@
     <span class="brand-seal"><img src="assets/logo-mark.png" alt="Watchers Bible logo"></span>
     <span class="brand-name">Watchers Bible</span>
   </a>
-  <a class="btn btn-ink btn-small" href="https://pub-89f5c51d343d4341826f8b8c2befcf2a.r2.dev/BibleWatchers.apk">Get the app</a>
+  <div class="get-app">
+    <!-- with JS the hand opens the chooser leaflet; without it the link
+        keeps its old truth and lands on the APK itself -->
+    <a class="btn btn-ink btn-small" id="getAppBtn" href="https://pub-89f5c51d343d4341826f8b8c2befcf2a.r2.dev/BibleWatchers.apk" aria-haspopup="true" aria-expanded="false" aria-controls="appMenu">Get the app</a>
+    <!-- the chooser: four ways in, one leaflet. the stores are not real
+        yet, so their rows turn a margin note instead of leaving the page -->
+    <div class="app-menu" id="appMenu" role="group" aria-label="Ways to get Watchers Bible">
+      <p class="am-title">Choose how to read</p>
+      <button class="am-row am-soon" type="button" data-note="Google Play is coming soon. Until the listing goes public, the APK below carries everything the store will carry.">
+        <svg class="am-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4,3 L20,12 L4,21 Z" fill="none" stroke-linejoin="round"/><path d="M4,3 L14.5,9.2 M4,21 L14.5,14.8" fill="none" opacity="0.6"/></svg>
+        <span class="am-main"><span class="am-name">Google Play</span><span class="am-sub">Android, the easy way</span></span>
+        <span class="am-tag am-tag-soon">soon</span>
+      </button>
+      <button class="am-row am-soon" type="button" data-note="The App Store is coming soon. Until it arrives, the web edition below reads in any browser.">
+        <svg class="am-glyph" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke-linecap="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5,19 L13.5,19"/></g></svg>
+        <span class="am-main"><span class="am-name">App Store</span><span class="am-sub">iPhone &amp; iPad</span></span>
+        <span class="am-tag am-tag-soon">soon</span>
+      </button>
+      <p class="am-div" aria-hidden="true"><span>ready today</span></p>
+      <a class="am-row" href="https://pub-89f5c51d343d4341826f8b8c2befcf2a.r2.dev/BibleWatchers.apk">
+        <svg class="am-glyph" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12,3 L12,14 M7.5,9.5 L12,14 L16.5,9.5"/><path d="M4,16 L4,19.5 L20,19.5 L20,16"/></g></svg>
+        <span class="am-main"><span class="am-name">Download the APK</span><span class="am-sub">Android &middot; offline, ad-free</span></span>
+      </a>
+      <a class="am-row" href="https://bibleonline.pages.dev" target="_blank" rel="noopener">
+        <svg class="am-glyph" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4.2" ry="9"/><path d="M3.6,9 L20.4,9 M3.6,15 L20.4,15"/></g></svg>
+        <span class="am-main"><span class="am-name">Read on the web</span><span class="am-sub">bibleonline.pages.dev &middot; nothing to install</span></span>
+        <span class="am-tag am-tag-new">new</span>
+      </a>
+      <p class="am-note" id="amNote" role="status"></p>
+    </div>
+  </div>
 </header>
 
 <main id="top">
@@ -582,7 +617,7 @@
           <input class="gf-input" id="gvContact" type="text" maxlength="120" autocomplete="off" placeholder="Email or phone, if you would like a reply">
 
           <p class="gf-error" id="gvError" role="alert" hidden></p>
-          <p class="gf-fine">Every gift is checked by hand. After it is approved, your name joins the supporter list inside the app within 24 hours. A receipt screenshot or reference number is required so the gift can be checked, and receipt images are deleted after checking. The note and contact details stay in the developer&rsquo;s private ledger and are never displayed.</p>
+          <p class="gf-fine">Every gift is checked by hand. After it is approved, your name joins the supporter list within 24 hours. A receipt screenshot or reference number is required so the gift can be checked, and receipt images are deleted after checking. The note and contact details stay in the developer&rsquo;s private ledger and are never displayed.</p>
           <button type="submit" class="gf-submit" id="gvSubmit" disabled>Submit for the supporter list</button>
         </form>
 
@@ -592,15 +627,41 @@
           </span>
           <p class="gd-title">Thank you!</p>
           <p class="gd-text">Your gift was received. Gifts are checked by hand, and your name joins the supporter list within 24 hours.</p>
-          <p class="gd-text gd-warn" id="giveDoneWarn" hidden>The receipt screenshot did not reach us, so the gift cannot be checked yet. Please submit again and enter the transaction reference number instead &mdash; the extra copy will be discarded.</p>
-          <p class="gd-text">See it join the wall below &mdash; and inside the app, everywhere you go: <a class="ink-link" href="https://pub-89f5c51d343d4341826f8b8c2befcf2a.r2.dev/BibleWatchers.apk">carry Watchers Bible with you</a>.</p>
+          <p class="gd-text gd-warn" id="giveDoneWarn" hidden>The receipt screenshot did not reach us, so the gift cannot be checked yet. Please submit again and enter the transaction reference number instead; the extra copy will be discarded.</p>
+          <p class="gd-text">See it join the wall below, and inside the app, everywhere you go: <a class="ink-link" href="https://pub-89f5c51d343d4341826f8b8c2befcf2a.r2.dev/BibleWatchers.apk">carry Watchers Bible with you</a>.</p>
         </div>
       </div>
 
+      <!-- The supporter wall: a ledger spread bound into the book. Two pages
+          (Recently approved / Top givers) with a sewn gutter between them,
+          a registrar's stamp at the head, and the count of checked names.
+          wall.js fills the spread from the ledger and runs the write-in
+          choreography; nothing shows until the ledger answers. -->
       <div class="give-wall card-sheet" id="giveWall" hidden>
-        <p class="give-eyebrow">The supporter wall</p>
-        <p class="give-wall-sub">Every name is checked by hand before it is listed. Quiet gifts stay unlisted, or list as Anonymous &mdash; the giver's choice, worn the same way inside the app.</p>
-        <div id="wallLists"></div>
+        <div class="wall-head">
+          <div class="wall-head-main">
+            <h3 class="wall-title">The supporter wall</h3>
+            <p class="wall-count"><span class="wall-count-n" id="wallCountN">0</span> names on the wall, every one checked by hand before it was listed.</p>
+            <p class="wall-sub">Quiet gifts stay unlisted, or list as Anonymous; always the giver&rsquo;s choice.</p>
+          </div>
+          <div class="wall-head-seal" aria-hidden="true">
+            <svg class="wall-stamp" viewBox="0 0 120 120" focusable="false">
+              <defs>
+                <path id="stampArcTop" d="M20,60 A40,40 0 0 1 100,60"/>
+                <path id="stampArcBottom" d="M16,60 A44,44 0 0 0 104,60"/>
+              </defs>
+              <circle cx="60" cy="60" r="55" fill="none" stroke="currentColor" stroke-width="2.6"/>
+              <circle cx="60" cy="60" r="31" fill="none" stroke="currentColor" stroke-width="1.3"/>
+              <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M60,44 C64.6,51.4 66.4,55.4 60,62 C53.6,55.4 55.4,51.4 60,44 Z"/>
+                <path d="M52,68 C55,70.4 65,70.4 68,68"/>
+              </g>
+              <text class="wall-stamp-word"><textPath href="#stampArcTop" startOffset="50%" text-anchor="middle">CHECKED BY HAND</textPath></text>
+              <text class="wall-stamp-word"><textPath href="#stampArcBottom" startOffset="50%" text-anchor="middle">WATCHERS BIBLE</textPath></text>
+            </svg>
+          </div>
+        </div>
+        <div class="wall-spread" id="wallLists"></div>
         <p class="wall-note">Recently approved lists gifts by the day they were checked; Top givers ranks by size, a dollar weighed beside a peso. The same wall lives inside the app.</p>
       </div>
 
