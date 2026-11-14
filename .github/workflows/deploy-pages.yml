@@ -1,0 +1,46 @@
+# Deploys the site to Cloudflare Pages on every push to main.
+#
+# The Pages project is direct-upload (no Cloudflare git connection), so this
+# workflow IS the pipeline. It keeps the deploy discipline from the README:
+# the deployed directory is a clean staging folder assembled in CI — the repo
+# root itself never goes public, so stray tracked files (README, .github, any
+# future notes) stay off the site.
+#
+# Needs two repository secrets (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN  — token with "Cloudflare Pages — Edit" permission
+#   CLOUDFLARE_ACCOUNT_ID — this account's 32-hex id (fe598f51…)
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+
+# one deploy at a time; a fresh push queues behind the running one
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Assemble the clean staging directory
+        run: |
+          rm -rf staging
+          mkdir -p staging
+          cp index.html privacy.html favicon.ico 404.html staging/
+          cp -r css js assets support staging/
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.162.0"
+          command: pages deploy staging --project-name=watchersbible --branch=main
