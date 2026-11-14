@@ -1,6 +1,6 @@
 /* Watchers Bible landing · the supporter wall (Chapter Eight)
    Reads the same public endpoint the app reads ·
-   watchersbible.vercel.app/api/donations, the Airtable ledger's approved
+   bibleonline.pages.dev/api/donations, the Airtable ledger's approved
    rows · so the page and the app always show one wall. No credential ever
    reaches this page: the token lives server-side only.
 
@@ -31,7 +31,7 @@
 (function () {
   "use strict";
 
-  var API = "https://watchersbible.vercel.app/api/donations";
+  var API = "https://bibleonline.pages.dev/api/donations";
   var INLINE_MAX = 10;
   /* write-in stagger, milliseconds: rows enter in reading order, left
      page then right page, capped so a long ledger never holds the stage */

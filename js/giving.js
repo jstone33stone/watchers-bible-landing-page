@@ -1,6 +1,6 @@
 /* Watchers Bible landing · the giving chapter (Chapter Eight)
    The listing request posts to the app's own backend
-   (watchersbible.vercel.app/api/donations) · the exact endpoint the app's
+   (bibleonline.pages.dev/api/donations) · the exact endpoint the app's
    give sheet uses, same fields, same proof pair (receipt screenshot OR
    transaction reference), same honeypot. The server independently
    re-validates everything and rate-limits per IP; nothing publishes
@@ -12,7 +12,7 @@
 (function () {
   "use strict";
 
-  var API = "https://watchersbible.vercel.app/api/donations";
+  var API = "https://bibleonline.pages.dev/api/donations";
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var section = document.getElementById("give");
