@@ -96,7 +96,7 @@
     <!-- with JS the hand opens the chooser leaflet; without it the link
         keeps its old truth and lands on the APK itself -->
     <a class="btn btn-ink btn-small" id="getAppBtn" href="https://pub-89f5c51d343d4341826f8b8c2befcf2a.r2.dev/BibleWatchers.apk" aria-haspopup="true" aria-expanded="false" aria-controls="appMenu">Get the app</a>
-    <!-- the chooser: four ways in, one leaflet. the stores are not real
+    <!-- the chooser: five ways in, one leaflet. the stores are not real
         yet, so their rows turn a margin note instead of leaving the page -->
     <div class="app-menu" id="appMenu" role="group" aria-label="Ways to get Watchers Bible">
       <p class="am-title">Choose how to read</p>
@@ -108,6 +108,11 @@
       <button class="am-row am-soon" type="button" data-note="The App Store is coming soon. Until it arrives, the web edition below reads in any browser.">
         <svg class="am-glyph" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke-linecap="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5,19 L13.5,19"/></g></svg>
         <span class="am-main"><span class="am-name">App Store</span><span class="am-sub">iPhone &amp; iPad</span></span>
+        <span class="am-tag am-tag-soon">soon</span>
+      </button>
+      <button class="am-row am-soon" type="button" data-note="Desktop editions for Windows, Mac and Linux are coming soon. Until they arrive, the web edition below reads in any browser on a computer.">
+        <svg class="am-glyph" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="15" height="10" rx="1.5"/><path d="M2.5,17.5 L21.5,17.5"/></g></svg>
+        <span class="am-main"><span class="am-name">Desktop</span><span class="am-sub">Windows &middot; Mac &middot; Linux</span></span>
         <span class="am-tag am-tag-soon">soon</span>
       </button>
       <p class="am-div" aria-hidden="true"><span>ready today</span></p>
@@ -203,6 +208,10 @@
           <span class="badge-soon" aria-label="iOS app coming soon">
             <svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5,19 L13.5,19"/></g></svg>
             iOS, coming soon
+          </span>
+          <span class="badge-soon" aria-label="Desktop editions for Windows, Mac and Linux coming soon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4" width="15" height="10" rx="1.5"/><path d="M2.5,17.5 L21.5,17.5"/></g></svg>
+            Desktop, coming soon
           </span>
         </div>
         <p class="apk-line">or <a class="ink-link" href="https://pub-89f5c51d343d4341826f8b8c2befcf2a.r2.dev/BibleWatchers.apk">download the APK directly</a></p>

@@ -1479,11 +1479,12 @@ body::after {
 /* ════════════════════════════════════════════════════════════════════
    THE GET-APP CHOOSER
    The top bar button no longer hands over the APK outright; it opens a
-   small leaflet listing the four ways in — Google Play, the App Store,
-   the direct APK and the web edition at bibleonline.pages.dev. The two
-   stores are still far off: tapping one turns a margin note inside the
-   leaflet instead of leaving the page. Without JS the button keeps its
-   old truth and lands on the APK itself.
+   small leaflet listing the five ways in: Google Play, the App Store,
+   the desktop editions, the direct APK and the web edition at
+   bibleonline.pages.dev. The stores and the desktop builds are still
+   far off: tapping one turns a margin note inside the leaflet instead
+   of leaving the page. Without JS the button keeps its old truth and
+   lands on the APK itself.
    ════════════════════════════════════════════════════════════════════ */
 .get-app { position: relative; }
 .app-menu {
