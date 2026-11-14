@@ -23,6 +23,10 @@ index.html        # all markup + inline SVG art
 privacy.html      # privacy policy (served at /privacy by pretty URLs)
 404.html          # LOAD-BEARING on Cloudflare Pages: without it, Pages
                   # auto-SPA-fallbacks every unknown path to index.html (200)
+_headers          # security headers (CSP, X-Frame-Options, HSTS,
+                  # Permissions-Policy) on every path; must ride every
+                  # deploy · its script hash pins index.html's inline
+                  # bootstrap, so recompute the hash when that script changes
 css/styles.css    # paper tokens, art, motion
 js/main.js        # motion director (observer + rAF + fallback sweeps)
 js/giving.js      # Chapter Eight: the listing form (posts to the ledger API)
@@ -40,7 +44,7 @@ Pages has no `.assetsignore`, so deploy a clean staging folder, never the repo r
 
 ```sh
 rm -rf "$TEMP/wb-pages" && mkdir -p "$TEMP/wb-pages"
-cp index.html privacy.html favicon.ico 404.html "$TEMP/wb-pages/"
+cp index.html privacy.html favicon.ico 404.html _headers "$TEMP/wb-pages/"
 cp -r css js assets support "$TEMP/wb-pages/"
 npx wrangler pages deploy "$TEMP/wb-pages" --project-name watchersbible --branch main
 ```
@@ -49,7 +53,7 @@ npx wrangler pages deploy "$TEMP/wb-pages" --project-name watchersbible --branch
 push builds the staging folder in CI and deploys it through
 `cloudflare/wrangler-action`. It needs two repository secrets
 (`Settings → Secrets and variables → Actions`): `CLOUDFLARE_API_TOKEN`
-(token with the "Cloudflare Pages — Edit" permission) and
+(token with the "Cloudflare Pages · Edit" permission) and
 `CLOUDFLARE_ACCOUNT_ID`. The manual recipe above stays as the fallback
 (hotfixes when CI is down, local verification). No `_redirects` file: pretty
 URLs are native on Pages, and 200-rewrites for `.html` caused a 307

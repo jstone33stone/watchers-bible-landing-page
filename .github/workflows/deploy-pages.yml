@@ -2,13 +2,13 @@
 #
 # The Pages project is direct-upload (no Cloudflare git connection), so this
 # workflow IS the pipeline. It keeps the deploy discipline from the README:
-# the deployed directory is a clean staging folder assembled in CI — the repo
+# the deployed directory is a clean staging folder assembled in CI · the repo
 # root itself never goes public, so stray tracked files (README, .github, any
 # future notes) stay off the site.
 #
 # Needs two repository secrets (Settings → Secrets and variables → Actions):
-#   CLOUDFLARE_API_TOKEN  — token with "Cloudflare Pages — Edit" permission
-#   CLOUDFLARE_ACCOUNT_ID — this account's 32-hex id (fe598f51…)
+#   CLOUDFLARE_API_TOKEN  · token with "Cloudflare Pages · Edit" permission
+#   CLOUDFLARE_ACCOUNT_ID · this account's 32-hex id (fe598f51…)
 name: Deploy to Cloudflare Pages
 
 on:
@@ -34,7 +34,7 @@ jobs:
         run: |
           rm -rf staging
           mkdir -p staging
-          cp index.html privacy.html favicon.ico 404.html staging/
+          cp index.html privacy.html favicon.ico 404.html _headers staging/
           cp -r css js assets support staging/
 
       - name: Deploy to Cloudflare Pages
