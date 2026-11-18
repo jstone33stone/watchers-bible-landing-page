@@ -35,6 +35,11 @@ js/giving.js      # Chapter Eight: the listing form (posts to the ledger API)
 js/wall.js        # Chapter Eight: the supporter wall (reads the ledger API)
 assets/           # logo mark + device screenshots (web + full-res)
 support/          # giving QR codes
+functions/        # /verse Pages Function: the shared-verse link + its OG
+                  # card in the app's Paper theme (see Deploy below)
+scripts/          # OG asset build (fonts/grain → JS modules) + local
+                  # card preview
+package.json      # the function's two deps (resvg-wasm, opentype.js)
 ```
 
 ## Deploy
@@ -50,6 +55,23 @@ cp index.html privacy.html delete-account.html favicon.ico 404.html _headers "$T
 cp -r css js assets support "$TEMP/wb-pages/"
 npx wrangler pages deploy "$TEMP/wb-pages" --project-name watchersbible --branch main
 ```
+
+(The deploy command must run from the repo root: `wrangler pages deploy`
+bundles `functions/` from the working directory, and the function's two
+deps need `npm install` to exist first. From anywhere else the site still
+ships but `/verse` dies with it.)
+
+**The /verse function — the shared-verse link.** The app's Share and Copy
+Link buttons point at `/verse?tr=…&b=…&bn=…&c=…&v=…&ta=…&t=…` (a multi
+selection copies the range's first verse and adds `r=`): social crawlers
+read the Open Graph tags, whose `og:image` renders the 1200×630 verse card
+in the app's Paper theme via `og=1` — the reader's own k6 speckle grain, a
+laid sheet with a bookmark ribbon, Literata Medium ink, the verse-image
+eyebrow — while humans meta-refresh into the storefront itself. Everything
+the card needs rides the query string; no server corpus. The bare root
+keeps the site's brand card. The card's baked data modules (fonts → sfnt,
+grain tile) regenerate with `npm run og:assets`; sample cards render
+locally with `npm run og:preview`.
 
 **Push = deploy.** `.github/workflows/deploy-pages.yml` watches `main`: every
 push builds the staging folder in CI and deploys it through

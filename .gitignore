@@ -7,3 +7,5 @@ Thumbs.db
 .taste-skill/
 
 .wrangler/
+node_modules/
+staging/

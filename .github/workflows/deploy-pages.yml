@@ -37,6 +37,13 @@ jobs:
           cp index.html privacy.html delete-account.html favicon.ico 404.html _headers staging/
           cp -r css js assets support staging/
 
+      # functions/verse.js carries two npm deps (resvg-wasm, opentype.js);
+      # wrangler bundles functions/ from the repo root at deploy time, so
+      # the lockfile state must exist here or the bundle fails and the
+      # whole deploy dies with it.
+      - name: Install the /verse function's dependencies
+        run: npm ci --no-audit --no-fund
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:

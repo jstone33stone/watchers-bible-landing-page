@@ -1,0 +1,14 @@
+{
+  "name": "watchers-bible-landing-page",
+  "private": true,
+  "type": "module",
+  "description": "Static landing site + the /verse Pages Function (per-verse Open Graph cards in the Paper theme).",
+  "scripts": {
+    "og:assets": "node scripts/make-og-assets.mjs",
+    "og:preview": "node scripts/preview-verse-card.mjs"
+  },
+  "dependencies": {
+    "@resvg/resvg-wasm": "^2.6.2",
+    "@shuding/opentype.js": "^1.4.0-beta.0"
+  }
+}
