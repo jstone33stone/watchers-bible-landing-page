@@ -189,10 +189,34 @@ function verseSvg({ text, refLine, abbr }) {
   const sheetH = 502;
   const sheetB = sheetY + sheetH; // 566
 
-  // ── eyebrow: "JOHN 3:16 · KJV" tracked caps (verse-image law) ─────────
-  const eyebrow = `${refLine} · ${abbr}`.toUpperCase();
-  const eyebrowSize = 24;
-  const eyebrowTrack = 9;
+  // ── eyebrow: "JOHN 3:16 · KJV" tracked caps (verse-image law) — measured
+  // down a size/track step at a time until it fits the free width: the
+  // ribbon hangs at x 1030, and a long ref ("1 CORINTHIANS 13:4–7 · KJV")
+  // must never run under it. A pathological ref (query params are length-
+  // capped but not bounded together) is char-truncated with an ellipsis as
+  // the last resort.
+  const eyebrowRaw = `${refLine} · ${abbr}`.toUpperCase();
+  const eyebrowMax = 820; // centered → right edge ≤ 1010, 20px clear of the ribbon
+  const eyebrowLaw = [
+    { size: 24, track: 9 },
+    { size: 22, track: 8 },
+    { size: 20, track: 7 },
+    { size: 18, track: 6 },
+  ];
+  let eyebrow = eyebrowRaw;
+  let eyebrowSize = eyebrowLaw[0].size;
+  let eyebrowTrack = eyebrowLaw[0].track;
+  for (const step of eyebrowLaw) {
+    eyebrowSize = step.size;
+    eyebrowTrack = step.track;
+    if (widthOf(eyebrow, f.inter700, eyebrowSize, eyebrowTrack) <= eyebrowMax) break;
+  }
+  if (widthOf(eyebrow, f.inter700, eyebrowSize, eyebrowTrack) > eyebrowMax) {
+    while (eyebrow.length > 1 && widthOf(`${eyebrow}…`, f.inter700, eyebrowSize, eyebrowTrack) > eyebrowMax) {
+      eyebrow = eyebrow.slice(0, -1);
+    }
+    eyebrow = `${eyebrow.replace(/[ ·]+$/, "")}…`;
+  }
   const eyebrowW = widthOf(eyebrow, f.inter700, eyebrowSize, eyebrowTrack);
   const eyebrowX = (1200 - eyebrowW) / 2;
   const eyebrowY = 158;
@@ -257,8 +281,8 @@ function verseSvg({ text, refLine, abbr }) {
   <rect x="${sheetX}" y="${sheetY + 14}" width="${sheetW}" height="${sheetH}" rx="6" fill="${INK}" fill-opacity="0.17" filter="url(#soft)"/>
   <rect x="${sheetX}" y="${sheetY}" width="${sheetW}" height="${sheetH}" rx="6" fill="${SHEET}" stroke="${STROKE}" stroke-width="1.5"/>
 
-  <polygon points="872,22 906,22 906,196 889,178 872,196" fill="${RIBBON}"/>
-  <polygon points="872,22 884,22 884,196 872,196" fill="${RIBBON_FOLD}"/>
+  <polygon points="1030,22 1064,22 1064,196 1047,178 1030,196" fill="${RIBBON}"/>
+  <polygon points="1030,22 1042,22 1042,196 1030,196" fill="${RIBBON_FOLD}"/>
 
   ${grainTiles.join("\n  ")}
   <rect width="1200" height="630" fill="url(#vig)"/>
@@ -375,7 +399,7 @@ async function renderOg(request) {
 
 /* ── The verse landing page ──────────────────────────────────────────────── */
 
-function versePage({ q, selfUrl, ogUrl, refLine, abbr, text }) {
+function versePage({ selfUrl, ogUrl, refLine, abbr, text }) {
   const title = `${refLine} (${abbr.toUpperCase()}) · Watchers Bible`;
   const desc = clean(text, MAX_DESC);
   return html(200, `<!doctype html>
@@ -388,19 +412,22 @@ function versePage({ q, selfUrl, ogUrl, refLine, abbr, text }) {
 <meta name="theme-color" content="#dbdcd6">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Watchers Bible">
+<meta property="og:locale" content="en_US">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${esc(selfUrl)}">
 <meta property="og:image" content="${esc(ogUrl)}">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${esc(refLine)}">
+<link rel="canonical" href="${esc(selfUrl)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">
 <meta name="twitter:image" content="${esc(ogUrl)}">
+<meta name="twitter:image:alt" content="${esc(refLine)}">
 <meta http-equiv="refresh" content="0; url=/">
-<noscript><link rel="canonical" href="https://watchersbible.pages.dev/"></noscript>
 </head>
 <body style="margin:0;background:#dbdcd6;color:#161713;font-family:Georgia,serif;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:32px">
 <main>
@@ -422,8 +449,8 @@ export async function onRequest({ request }) {
   }
 
   const q = url.searchParams;
-  const tr = clean(q.get("tr"), 24) || "kjv";
-  const b = String(parseInt(q.get("b"), 10) || 1);
+  // tr/b ride the query untouched (the og:image URL forwards everything;
+  // the card prints bn, not b) — only the page-facing fields parse.
   const c = String(parseInt(q.get("c"), 10) || 1);
   const v = String(parseInt(q.get("v"), 10) || 1);
   const bn = clean(q.get("bn"), MAX_BOOK) || "The Bible";
@@ -438,7 +465,5 @@ export async function onRequest({ request }) {
   const ogParams = new URLSearchParams(q);
   ogParams.set("og", "1");
   const ogUrl = `${url.origin}/verse?${ogParams.toString()}`;
-  void tr;
-  void b;
-  return versePage({ q, selfUrl, ogUrl, refLine, abbr: ta, text: t });
+  return versePage({ selfUrl, ogUrl, refLine, abbr: ta, text: t });
 }

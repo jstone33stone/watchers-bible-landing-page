@@ -52,6 +52,25 @@ const SAMPLES = [
       abbr: "ADB",
     },
   },
+  {
+    // The eyebrow's worst realistic case: a long book name + a long range —
+    // must shrink a step (or more) and never run under the ribbon at x 1030.
+    name: "worst-ref",
+    params: {
+      text: "Ang salita mo'y ilawan sa aking mga paa, at liwanag sa aking landas. Ito'y sandata ko sa laban, at kalakip ko sa paglakad, araw man ay gabi man.",
+      refLine: "Song of Solomon 8:100–105, 108",
+      abbr: "ADB",
+    },
+  },
+  {
+    // The love chapter — the likeliest long-ref share.
+    name: "long-ref",
+    params: {
+      text: "Charity suffereth long, and is kind; charity envieth not; charity vaunteth not itself, is not puffed up,",
+      refLine: "1 Corinthians 13:4–7",
+      abbr: "KJV",
+    },
+  },
 ];
 
 for (const { name, params } of SAMPLES) {

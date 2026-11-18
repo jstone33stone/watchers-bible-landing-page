@@ -6,7 +6,7 @@ The site is a paper-art showcase in the app's Kindle Paperwhite "Paper" theme: c
 
 ## Stack
 
-Plain HTML + CSS + vanilla JavaScript. No build step, no dependencies (fonts come from Google Fonts). Deployable to any static host.
+Plain HTML + CSS + vanilla JavaScript for the site itself (fonts come from Google Fonts); no build step. The `/verse` Pages Function is the one server surface — two npm deps, bundled by wrangler at deploy time. Static hosting works for the pages; Cloudflare Pages hosts both.
 
 ## Run locally
 
