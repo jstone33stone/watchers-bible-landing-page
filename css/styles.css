@@ -926,6 +926,19 @@ body::after {
 }
 .badge-soon svg { width: 19px; height: 19px; stroke: var(--ink-mut); }
 
+/* the Windows chip is real, so it dresses like the badge and not like a promise */
+.badge-ready {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 57px; padding: 0 22px;
+  border: 1.5px solid var(--ink); border-radius: 10px;
+  color: var(--ink); font-size: 14px;
+  background: var(--sheet);
+  background-image: var(--paper-fine);
+  text-decoration: none;
+}
+.badge-ready svg { width: 19px; height: 19px; stroke: var(--ink); }
+.badge-ready:hover, .badge-ready:focus-visible { background-color: rgba(22, 23, 20, 0.07); outline: none; }
+
 /* ── chapter four: widget home screen + notification ──────────────── */
 .widget-stage {
   display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 20px;
@@ -1050,7 +1063,7 @@ body::after {
 
 /* ── v4 choreography (same contract as v3) ────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
-  .js .hero .badge-row .badge-soon {
+  .js .hero .badge-row .badge-soon, .js .hero .badge-row .badge-ready {
     opacity: 0; transform: translateY(16px);
     animation: load-rise 650ms var(--ease-out) 1030ms forwards;
   }
@@ -1100,7 +1113,7 @@ body::after {
   .wg-panel { padding: 18px 14px 14px; }
   .widget-stage { gap: 14px; }
   .wg-apps { display: none; }
-  .badge-soon { min-height: 50px; padding: 0 16px; font-size: 13px; }
+  .badge-soon, .badge-ready { min-height: 50px; padding: 0 16px; font-size: 13px; }
 }
 
 /* ════════════════════════════════════════════════════════════════════
